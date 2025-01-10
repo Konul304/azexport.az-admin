@@ -6,6 +6,8 @@ import { delete_icon, edit, infoArrow } from '@/public/icons';
 import aliexpress from "@/public/image.png";
 import Image from 'next/image';
 import PlatformInfoModal from './PlatformInfoModal';
+import DeleteModal from './Common/DeleteModal';
+import AddNoteModal from './Common/AddNoteModal';
 
 export interface TableColumn {
     accessorFn: (row: any) => any;
@@ -17,6 +19,9 @@ export interface TableColumn {
 
 const OrdersPageContainer = () => {
     const [openRowId, setOpenRowId] = useState<number | null>(null);
+    const [selectedRow, setSelectedRow] = useState<number | null>(null);
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
+    const [openAddNoteModal, setOpenAddNoteModal] = useState(false);
 
     const getStatusStyles = (text: string) => {
         switch (text) {
@@ -210,21 +215,19 @@ const OrdersPageContainer = () => {
                     <div className={styles.table_buttons}>
                         <div
                             className={styles.td_edit_button}
-                        //   onClick={() => {
-                        //     setSelectedRow(info.row.original);
-                        //     setOpenNewUpdateModal(true);
-                        //     setModalAction("updateCurrentAdmin");
-                        //   }}
+                            onClick={() => {
+                                setSelectedRow(info.row.original);
+                                setOpenAddNoteModal(true);
+                            }}
                         >
                             {edit}
                         </div>
                         <div
                             className={styles.td_remove_button}
-                        //   onClick={() => {
-                        //     setSelectedRow(info.row.original);
-                        //     setDeleteAction("admin");
-                        //     setOpenDeleteModal(true);
-                        //   }}
+                            onClick={() => {
+                                setSelectedRow(info.row.original);
+                                setOpenDeleteModal(true);
+                            }}
                         >
                             {delete_icon}
                         </div>
@@ -239,6 +242,7 @@ const OrdersPageContainer = () => {
 
     return (
         <>
+            <div className={styles.table_title}>Sifarişlər</div>
             <div className={styles.table_container}>
                 <Table
                     columns={allTableColumns}
@@ -285,6 +289,8 @@ const OrdersPageContainer = () => {
               />
             </div>
           </div> */}
+                {openDeleteModal && <DeleteModal openDeleteModal={openDeleteModal} setOpenDeleteModal={setOpenDeleteModal} />}
+                {openAddNoteModal && <AddNoteModal openAddNoteModal={openAddNoteModal} setOpenAddNoteModal={setOpenAddNoteModal} />}
             </div>
         </>
     )

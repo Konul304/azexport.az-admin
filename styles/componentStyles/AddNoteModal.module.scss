@@ -1,0 +1,41 @@
+.add_note_modal_container {
+    .title {
+        color: #2B3644;
+        // font-family: "SF Pro Display";
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 140%;
+        margin-bottom: 10px;
+    }
+
+    .note_textarea {
+        width: 347px;
+        height: 120px;
+        border-radius: 10px;
+        border: 1px solid #2400FF;
+        box-shadow: -1px 1px 2.1px 0px #6851F7;
+        margin-bottom: 10px;
+    }
+
+    .save_btn {
+        color: #2400FF;
+        text-align: right;
+        // font-family: "SF Pro Display";
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 140%;
+        cursor: pointer;
+    }
+
+    textarea {
+        resize: none;
+        font-family: Inter,sans-serif;
+        padding: 16px;
+        color: #2B3644;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 140%;
+    }
+}

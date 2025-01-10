@@ -8,10 +8,6 @@
   justify-content: space-between;
   padding: 0 2.4rem;
   background-color: #FAFAFB;
-
-  .navbar_left_side {
-    width: 21.9rem;
-  }
 }
 
 .navbar_user {
@@ -26,54 +22,6 @@
 
   .navbar_left_side {
     width: 21.9rem;
-  }
-}
-
-.navbar_right_side {
-  // width: 100%;
-  min-width: 52.9rem;
-  @include flex-center;
-  justify-content: space-between;
-
-  .bi_button {
-    // margin-left: 45rem;
-    margin-right: 3.6rem;
-
-    button {
-      @include modal_fonts;
-      width: 14.5rem;
-      height: 4.7rem;
-      color: #fff;
-      border-radius: 8px;
-      background: var(--primary-color, #2e3c7f);
-
-      &:hover {
-        background-color: #293673;
-      }
-
-      &:active {
-        background-color: #253066;
-      }
-
-      transition: 0.3s;
-    }
-  }
-
-  .bi_button_user {
-    margin-right: 3.6rem;
-
-    button {
-      @include modal_fonts;
-      width: 14.5rem;
-      height: 4.7rem;
-      color: #fff;
-      font-size: 1.6rem;
-      font-style: normal;
-      font-weight: 600;
-      line-height: normal;
-      border-radius: 8px;
-      background: var(--primary-color, #2e3c7f);
-    }
   }
 }
 
@@ -140,20 +88,6 @@
   }
 }
 
-.role_profile_con {
-  @include flex-center;
-  gap: 2rem;
-
-  .user_role {
-    height: 3.1rem;
-    border-radius: 1.5rem;
-    background-color: #eaebf2;
-    padding: 0.6rem 1rem;
-    color: #2e3c7f;
-    font-size: 1.6rem;
-    font-weight: 400;
-    cursor: pointer;
-  }
 
   .profile_con {
     display: flex;
@@ -163,7 +97,7 @@
     .popover_content {
       display: flex;
       align-items: center;
-      gap: 2rem;
+      gap: 4px;
 
       .profile_photo {
         width: 4.8rem;
@@ -219,9 +153,7 @@
       }
 
       .dropdown_icon {
-        width: 2.4rem;
-        height: 2.4rem;
+        margin-top:2px ;
       }
     }
-  }
 }

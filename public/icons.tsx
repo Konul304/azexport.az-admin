@@ -177,6 +177,12 @@ const email = (
     </svg>
 );
 
+const profil_dropdown = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
+        <path d="M4.05762 6.5L8.05762 10.5L12.0576 6.5" stroke="#67778C" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+);
+
 export {
     home_icon,
     orders,
@@ -192,5 +198,6 @@ export {
     paperClip,
     calendar,
     phone,
-    email
+    email,
+    profil_dropdown
 };
