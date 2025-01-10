@@ -179,7 +179,6 @@ const Navbar = ({ logoProp, roleProp }: any) => {
           <div>
             <div className={styles.role_profile_con}>
 
-
               {/* <div className={styles.profile_con}>
                 <div className={styles.profile_con}>
                   <Popover

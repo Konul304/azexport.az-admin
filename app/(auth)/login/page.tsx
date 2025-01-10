@@ -1,5 +1,4 @@
 "use client";
-
 import { useRef, useState } from "react";
 // import { Spin } from "antd";
 // import Cookies from "js-cookie";
@@ -116,7 +115,7 @@ const LoginPage = () => {
                             </div>
                             <button className={styles.login_btn} type="submit">
                                 <div>
-                                Daxil ol
+                                    Daxil ol
                                 </div>
                                 {/* <div className={styles.loader}>
                   {isLoading ? <Spin size="small" /> : "Daxil ol"}
