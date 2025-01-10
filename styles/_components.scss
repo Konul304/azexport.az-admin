@@ -1,0 +1,19 @@
+@import "./mixin";
+
+.main_container {
+    display: flex;
+    overflow-x: hidden;
+    height: 100%;
+    background-color: #fbfbfc;
+}
+
+.navbar_and_body {
+    width: 100vw;
+}
+
+.body_container {
+    // height: 100vh;
+    width: 100%;
+    padding: 3.6rem 2.4rem;
+    background-color: #fbfbfc;
+}
