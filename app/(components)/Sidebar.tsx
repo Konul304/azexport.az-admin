@@ -22,7 +22,6 @@ import { home_icon, orders } from "@/public/icons";
 const Sidebar = () => {
     const pathname = usePathname();
     const [selectedMenuItemId, setSelectedMenuItemId] = useState(pathname);
-    console.log(pathname)
     useEffect(() => {
         setSelectedMenuItemId(pathname);
     }, [pathname]);

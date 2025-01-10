@@ -46,3 +46,79 @@
     color: #E74C3C;
     background: rgba(231, 76, 60, 0.08);
 }
+
+.platform_info_container {
+    width: 361px;
+    padding: 22px;
+    border-radius: 10px;
+    background: #FFF;
+    position: absolute;
+    z-index: 2;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    .dropdown_header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #67778C;
+        // font-family: "SF Pro Display";
+        font-size: 17.612px;
+        font-weight: 500;
+        line-height: 140%;
+        /* 24.656px */
+    }
+
+    .dashed_line {
+        border-top: 1px dashed #ccc;
+        /* Add a dashed line */
+        margin-top: 10px;
+        width: 100%;
+        position: absolute;
+        left: 0;
+    }
+
+    .info_content {
+        display: flex;
+        gap: 23px;
+        margin-top: 30px;
+
+        .titles
+         {
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            row-gap: 18px;
+            font-size: 13.209px;
+            font-weight: 400;
+        }
+
+        .descriptions{
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            row-gap: 11.4px;
+            font-size: 13.209px;
+            font-weight: 400;
+        }
+
+        .titles {
+            color: #2400FF;
+        }
+
+        .descriptions {
+            color: #67778C;
+
+            .description {
+                display: flex;
+                align-items: center;
+                gap: 9px;
+                .desc_icon{
+                    margin-top: 2px;
+                }
+                .desc_text{
+                    margin-bottom: 2px;
+                }
+            }
+        }
+    }
+}
