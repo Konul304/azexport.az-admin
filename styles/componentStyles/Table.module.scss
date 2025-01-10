@@ -1,0 +1,182 @@
+@import "../mixin";
+
+.table_container {
+    background-color: #fbfbfc;
+    width: 100%;
+    // width: 127rem;
+    overflow-x: auto;
+    border-radius: 5px 5px 0px 0px;
+
+    &::-webkit-scrollbar {
+        height: 1.8rem;
+    }
+
+    &::-webkit-scrollbar-button {
+        display: block;
+        background-color: #e3e8f7;
+        background-repeat: no-repeat;
+        background-size: center;
+        background-position: center;
+        height: 1.8rem;
+        width: 1.8rem;
+    }
+
+    &::-webkit-scrollbar-button:horizontal:start:increment {
+        display: none;
+    }
+
+    &::-webkit-scrollbar-button:horizontal:start:decrement {
+        background-image: url("../../public/scroll_left.svg");
+    }
+
+    &::-webkit-scrollbar-button:horizontal:end:increment {
+        background-image: url("../../public/scroll_right.svg");
+    }
+
+    &::-webkit-scrollbar-button:horizontal:end:decrement {
+        display: none;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+        background: #f9fbff;
+        margin-top: 1rem;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        background: #cfd4e1;
+        border-radius: 2.5rem;
+        border: 0.5rem solid #f9fbff;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+        background: #c0c7da;
+    }
+}
+
+.table {
+    border-spacing: 0;
+    width: 100%;
+    overflow-x: scroll;
+    margin-bottom: 1rem;
+
+    tbody:before {
+        // width: 117.3rem;
+        line-height: 1.8rem;
+        color: #fbfbfc;
+        display: block;
+    }
+
+    th,
+    td {
+        margin: 0;
+        padding: 5px 2rem;
+        border-bottom: 1px solid #D2D5DA;
+        white-space: nowrap;
+    }
+
+    th {
+        height: 60px !important;
+        color: #959ca3;
+        background-color: #F4F6F8;
+        color: #67778C;
+        text-align: center;
+        // font-family: "SF Pro Display";
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 140%;
+        max-width: 87px;
+        white-space: break-spaces;
+    }
+
+    td {
+        color: rgba(103, 119, 140, 0.80);
+        // font-family: "SF Pro Display";
+        text-align: center;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 140%;
+        overflow: hidden;
+        text-overflow: ellipsis !important;
+        white-space: nowrap;
+        font-weight: 400;
+        color: #3c3c3c;
+
+        &:first-child {
+            border-left: 1px solid #D2D5DA;
+        }
+
+        &:last-child {
+            border-right: 1px solid #D2D5DA;
+        }
+    }
+
+    tr {
+        background-color: #fff;
+        border-left: 1px solid #D2D5DA;
+        border-right: 1px solid #D2D5DA;
+        height: 45px !important;
+
+        &:last-child {
+            td {
+                &:first-child {
+                    border-bottom-left-radius: 10px;
+                }
+
+                &:last-child {
+                    border-bottom-right-radius: 10px;
+                }
+            }
+        }
+    }
+
+    thead {
+        tr {
+            th {
+                border-top: 1px solid #D2D5DA;
+                border-bottom: 1px solid #D2D5DA;
+
+                &:first-child {
+                    border-left: 1px solid #D2D5DA;
+                    border-top-left-radius: 10px;
+                }
+
+                &:last-child {
+                    border-right: 1px solid #D2D5DA;
+                    border-top-right-radius: 10px;
+                }
+            }
+        }
+    }
+
+    &_sort_btn {
+        display: flex;
+    }
+
+    &_header {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+}
+
+.loading {
+    width: 100%;
+    height: 36rem !important;
+    padding: 2rem !important;
+
+    td {
+        height: 36rem !important;
+    }
+
+    span {
+        span {
+            margin-bottom: 1rem;
+            height: 3.2rem;
+        }
+    }
+}

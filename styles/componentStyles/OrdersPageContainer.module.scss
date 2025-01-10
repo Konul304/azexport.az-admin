@@ -1,0 +1,48 @@
+@import "../mixin";
+
+.table_buttons {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+
+    .td_edit_button,
+    .td_remove_button {
+        cursor: pointer;
+    }
+}
+
+.table_pagination {
+    @include table_pagination;
+}
+
+.waiting,
+.sent,
+.exported,
+.returned {
+    display: flex;
+    width: 100px;
+    height: 33px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.waiting {
+    color: #F1C40F;
+    background: rgba(241, 196, 15, 0.10);
+}
+
+.sent {
+    color: #07BC0C;
+    background: rgba(7, 188, 12, 0.08);
+}
+
+.exported {
+    color: #3498DB;
+    background: rgba(52, 152, 219, 0.08);
+}
+
+.returned {
+    color: #E74C3C;
+    background: rgba(231, 76, 60, 0.08);
+}

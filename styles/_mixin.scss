@@ -1,0 +1,130 @@
+// @import "./variables";
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin button-cancel {
+  width: 8.9rem;
+  height: 4.7rem;
+  border-radius: 0.8rem;
+  font-weight: 500;
+  font-size: 1.6rem;
+  line-height: 1.9rem;
+  transition: 0.3s;
+}
+
+@mixin button-finish {
+  width: 11.5rem;
+  height: 4.7rem;
+  border-radius: 0.8rem;
+  font-weight: 500;
+  font-size: 1.6rem;
+  line-height: 1.9rem;
+  transition: 0.3s;
+}
+
+@mixin modal_fonts {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.9rem;
+}
+
+@mixin modal_title {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 2.8rem;
+  color: #3c3c3c;
+}
+
+@mixin input-border {
+  border-radius: 5px;
+  border: 1px solid #000;
+}
+
+@mixin table_pagination {
+  height: 3.5rem;
+  margin-top: 1.8rem;
+  @include flex-center;
+  justify-content: space-between;
+  .pagination_details_txt {
+    @include modal_fonts;
+    color: #959ca3 !important;
+  }
+  .pagination {
+    // max-width: 39.8rem;
+    button {
+      path {
+        fill: #959ca3;
+      }
+    }
+    ul {
+      gap: 2.4rem;
+      // margin-bottom: 0;
+      padding: 0;
+      li {
+        // width: 26px;
+        padding: 0.5rem;
+        height: 35px;
+        color: #3c3c3c;
+        cursor: pointer;
+        @include flex-center;
+        @include modal_fonts;
+        font-weight: 400;
+      }
+    }
+  }
+}
+
+@mixin vertical_scrollbar {
+  /* width */
+  &::-webkit-scrollbar {
+    width: 1.8rem;
+  }
+
+  &::-webkit-scrollbar-button {
+    border-bottom-right-radius: 4px !important;
+    border-top-right-radius: 4px !important;
+    display: block;
+    background-color: #eaeef9;
+    background-repeat: no-repeat;
+    background-size: center;
+    background-position: center;
+    height: 1.8rem;
+  }
+
+  &::-webkit-scrollbar-button:vertical:start:increment {
+    display: none;
+  }
+
+  &::-webkit-scrollbar-button:vertical:start:decrement {
+    background-image: url("/images/scroll_up.svg");
+  }
+
+  &::-webkit-scrollbar-button:vertical:end:increment {
+    background-image: url("/images/scroll_down.svg");
+  }
+
+  &::-webkit-scrollbar-button:vertical:end:decrement {
+    display: none;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: #fff;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: #eaecf2 !important;
+    border-radius: 2.7rem;
+    border: 0.5rem solid #fff !important;
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: #c0c7da !important;
+  }
+}

@@ -1,0 +1,227 @@
+@import "../mixin";
+
+.navbar_container {
+  margin: 0;
+  width: 100%;
+  height: 9.9rem;
+  @include flex-center;
+  justify-content: space-between;
+  padding: 0 2.4rem;
+  background-color: #FAFAFB;
+
+  .navbar_left_side {
+    width: 21.9rem;
+  }
+}
+
+.navbar_user {
+  margin: 0 auto;
+  width: 154rem;
+  height: 6.6rem;
+  border-bottom: 0.1rem solid #eaecf2;
+  @include flex-center;
+  justify-content: space-between;
+  padding: 0 2.4rem;
+  background-color: #2d3c7f;
+
+  .navbar_left_side {
+    width: 21.9rem;
+  }
+}
+
+.navbar_right_side {
+  // width: 100%;
+  min-width: 52.9rem;
+  @include flex-center;
+  justify-content: space-between;
+
+  .bi_button {
+    // margin-left: 45rem;
+    margin-right: 3.6rem;
+
+    button {
+      @include modal_fonts;
+      width: 14.5rem;
+      height: 4.7rem;
+      color: #fff;
+      border-radius: 8px;
+      background: var(--primary-color, #2e3c7f);
+
+      &:hover {
+        background-color: #293673;
+      }
+
+      &:active {
+        background-color: #253066;
+      }
+
+      transition: 0.3s;
+    }
+  }
+
+  .bi_button_user {
+    margin-right: 3.6rem;
+
+    button {
+      @include modal_fonts;
+      width: 14.5rem;
+      height: 4.7rem;
+      color: #fff;
+      font-size: 1.6rem;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+      border-radius: 8px;
+      background: var(--primary-color, #2e3c7f);
+    }
+  }
+}
+
+.input_container {
+  position: relative;
+  width: 43.4rem;
+  height: 4.8rem;
+  border-radius: 10px;
+  border: 0.75px solid #D2D5DA;
+  background: #FFF;
+  // margin-right: 22rem;
+}
+
+.search_icon {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+}
+
+.input {
+  width: 37rem;
+  border: none;
+  background: transparent;
+  font-size: 1.6rem;
+  position: absolute;
+  left: 4.2rem;
+  top: 1.4rem;
+}
+
+.input:focus {
+  outline: none;
+}
+
+.drop_flex {
+  height: 10.4rem;
+
+  .dropdown_menu {
+    cursor: pointer;
+    display: flex;
+    // width: 20rem;
+    gap: 1rem;
+    padding: 1.6rem 2.4rem;
+
+    div {
+      height: 2rem;
+    }
+
+    &:first-child {
+      &:hover {
+        border-radius: 0.5rem 0.5rem 0rem 0rem;
+      }
+    }
+
+    &:nth-child(2) {
+      &:hover {
+        border-radius: 0rem 0rem 0.5rem 0.5rem;
+      }
+    }
+
+    &:hover {
+      background-color: #f8f8f8;
+      transition: 0.3s;
+    }
+  }
+}
+
+.role_profile_con {
+  @include flex-center;
+  gap: 2rem;
+
+  .user_role {
+    height: 3.1rem;
+    border-radius: 1.5rem;
+    background-color: #eaebf2;
+    padding: 0.6rem 1rem;
+    color: #2e3c7f;
+    font-size: 1.6rem;
+    font-weight: 400;
+    cursor: pointer;
+  }
+
+  .profile_con {
+    display: flex;
+    gap: 2rem;
+    cursor: pointer;
+
+    .popover_content {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+
+      .profile_photo {
+        width: 4.8rem;
+        height: 4.8rem;
+        border-radius: 50%;
+
+        .photo {
+          width: 4.8rem;
+          height: 4.8rem;
+          border-radius: 50%;
+          object-fit: cover;
+          // width: fit-content;
+        }
+      }
+
+      .profile_name {
+        .fullname {
+          // display: block;
+          font-size: 1.6rem;
+          font-style: normal;
+          font-weight: 700;
+          line-height: normal;
+          color: #3c3c3c;
+          max-width: 27rem;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+
+        .fullname_user {
+          // display: block;
+          font-weight: 700;
+          font-size: 1.6rem;
+          color: #fff;
+          max-width: 27rem;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+
+        .email {
+          color: #959ca3;
+          @include modal_fonts;
+        }
+
+        .email_user {
+          color: #c4c4c4;
+          font-size: 1.6rem;
+          font-style: normal;
+          font-weight: 600;
+          line-height: normal;
+        }
+      }
+
+      .dropdown_icon {
+        width: 2.4rem;
+        height: 2.4rem;
+      }
+    }
+  }
+}
