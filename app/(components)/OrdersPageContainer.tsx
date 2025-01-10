@@ -1,10 +1,11 @@
 "use client";
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import styles from "@/styles/componentStyles/OrdersPageContainer.module.scss";
 import Table from './Table/Table';
-import { delete_icon, edit } from '@/public/icons';
+import { delete_icon, edit, infoArrow } from '@/public/icons';
 import aliexpress from "@/public/image.png";
 import Image from 'next/image';
+import PlatformInfoModal from './PlatformInfoModal';
 
 export interface TableColumn {
     accessorFn: (row: any) => any;
@@ -15,6 +16,7 @@ export interface TableColumn {
 }
 
 const OrdersPageContainer = () => {
+    const [openRowId, setOpenRowId] = useState<number | null>(null);
 
     const getStatusStyles = (text: string) => {
         switch (text) {
@@ -122,6 +124,15 @@ const OrdersPageContainer = () => {
         },
     ];
 
+    const infoData: any = {
+        platform: 'Ali express',
+        name: 'Ali express',
+        no: '855',
+        date: '28/10/2024',
+        phoneNumber: '+2020 8788 677 56',
+        email: 'aliexpressseller@gmail.com'
+    }
+
     const allTableColumns: TableColumn[] = useMemo(
         () => [
             {
@@ -160,6 +171,13 @@ const OrdersPageContainer = () => {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                         <div><Image src={aliexpress} width={15} height={15} alt='logo' style={{ marginTop: '5px' }} /></div>
                         <div>{info.getValue()}</div>
+                        <div style={{ cursor: 'pointer', marginTop: '6px' }}>
+                            <div onClick={() => {
+                                setOpenRowId(prevId => prevId === info.row.original.id ? null : info.row.original.id);
+                            }}>{infoArrow}</div>
+                            {openRowId === info.row.original.id && <PlatformInfoModal setOpenRowId={setOpenRowId} infoData={infoData} />
+                            }
+                        </div>
                     </div>,
                 enableResizing: false,
             },
@@ -216,7 +234,7 @@ const OrdersPageContainer = () => {
                 enableResizing: false,
             },
         ],
-        []
+        [openRowId]
     );
 
     return (

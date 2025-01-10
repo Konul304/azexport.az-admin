@@ -1,5 +1,6 @@
 "use client";
-import "./globals.css";
+import "@/styles/_globals.scss";
+import "@/styles/main.scss";
 import Sidebar from "./(components)/Sidebar";
 import Navbar from "./(components)/Navbar";
 import { usePathname } from "next/navigation";
@@ -17,7 +18,6 @@ export default function RootLayout({
 }>) {
 
   const pathname = usePathname();
-  console.log(pathname)
 
   return (
     <>
