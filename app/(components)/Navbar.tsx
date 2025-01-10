@@ -17,7 +17,8 @@ import { usePathname, useRouter } from "next/navigation";
 //   logo_light,
 // } from "@/public/images/index";
 import styles from "@/styles/componentStyles/Navbar.module.scss";
-import { search } from "@/public/icons";
+import { downArrow, profil_dropdown, search } from "@/public/icons";
+import { Popover, Tooltip } from "antd";
 // import { getUserPhoto } from "../(api)/api";
 // import {
 //   setForcePageNum,
@@ -32,8 +33,10 @@ import { search } from "@/public/icons";
 // import noImage from "../../public/images/no pp.svg";
 // import { NavbarProps } from "../interfaces";
 // import AuthHistoryModal from "./AuthHistoryModal";
+import profile from "@/public/defaultPP.png"
 
 const Navbar = ({ logoProp, roleProp }: any) => {
+  const [openPopover, setOpenPopover] = useState<boolean>(false);
   const isAdmin = roleProp === "Admin" ? true : false;
 
   const name =
@@ -67,7 +70,6 @@ const Navbar = ({ logoProp, roleProp }: any) => {
   //   );
   //   const [openModal, setOpenModal] = useState<boolean>(false);
   //   const [openAuthModal, setAuthOpenModal] = useState<boolean>(false);
-  //   const [openPopover, setOpenPopover] = useState<boolean>(false);
   //   const handleInputChange = (event: any) => {
   //     const value = event.target.value;
   //     dispatch(setSearchValue(value));
@@ -143,9 +145,9 @@ const Navbar = ({ logoProp, roleProp }: any) => {
   //     }
   //   };
 
-  //   const handleOpenPopover = (newOpen: boolean) => {
-  //     setOpenPopover(newOpen);
-  //   };
+  const handleOpenPopover = (newOpen: boolean) => {
+    setOpenPopover(newOpen);
+  };
 
   //   const { data, isLoading, isError } = useQuery(
   //     ["profilPhoto"],
@@ -175,11 +177,8 @@ const Navbar = ({ logoProp, roleProp }: any) => {
             placeholder="axtar"
           />
         </div>
-        <div className={styles.navbar_right_side}>
           <div>
-            <div className={styles.role_profile_con}>
-
-              {/* <div className={styles.profile_con}>
+              <div className={styles.profile_con}>
                 <div className={styles.profile_con}>
                   <Popover
                     content={popoverContent}
@@ -194,15 +193,11 @@ const Navbar = ({ logoProp, roleProp }: any) => {
                         {" "}
                         <Image
                           className={styles.photo}
-                          src={
-                            data?.imageType
-                              ? `data:${data?.imageType};base64, ${data?.imageBase64}`
-                              : noImage
-                          }
+                          src={profile}
                           alt="Picture"
                           width="48"
                           height="48"
-                          // intrinsicsize="50 x 50"
+                        // intrinsicsize="50 x 50"
                         />
                       </div>
                       <div className={styles.profile_name}>
@@ -227,16 +222,14 @@ const Navbar = ({ logoProp, roleProp }: any) => {
                           </div>
                         </Tooltip>
                       </div>
-                      <button type="button" className={styles.dropdown_icon}>
-                        {dropdown}
-                      </button>
+                      <div className={styles.dropdown_icon}>
+                        {profil_dropdown}
+                      </div>
                     </div>
                   </Popover>
                 </div>
-              </div> */}
             </div>
           </div>
-        </div>
       </div>
 
       {/* <PowerBIDashboard isOpen={openModal} setIsOpen={setOpenModal} />

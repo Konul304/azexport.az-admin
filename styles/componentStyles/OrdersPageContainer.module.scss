@@ -1,5 +1,14 @@
 @import "../mixin";
 
+.table_title {
+    color: #2B3644;
+    font-family: Inter,sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 145%;
+    margin-bottom: 37px;
+}
+
 .table_buttons {
     display: flex;
     gap: 1rem;
@@ -82,8 +91,7 @@
         gap: 23px;
         margin-top: 30px;
 
-        .titles
-         {
+        .titles {
             text-align: left;
             display: flex;
             flex-direction: column;
@@ -92,7 +100,7 @@
             font-weight: 400;
         }
 
-        .descriptions{
+        .descriptions {
             text-align: left;
             display: flex;
             flex-direction: column;
@@ -112,10 +120,12 @@
                 display: flex;
                 align-items: center;
                 gap: 9px;
-                .desc_icon{
+
+                .desc_icon {
                     margin-top: 2px;
                 }
-                .desc_text{
+
+                .desc_text {
                     margin-bottom: 2px;
                 }
             }

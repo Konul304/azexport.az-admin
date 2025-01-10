@@ -1,0 +1,66 @@
+@import "../mixin";
+
+.delete_modal_container {
+    .title {
+        margin-top: 20px;
+        margin-bottom: 4px;
+        color: #2B3644;
+        text-align: center;
+        // font-family: "SF Pro Display";
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 140%;
+    }
+
+    .description {
+        color: rgba(103, 119, 140, 0.40);
+        text-align: center;
+        // font-family: "SF Pro Display";
+        font-size: 10px;
+        font-weight: 500;
+        line-height: 140%;
+        margin-bottom: 26px;
+    }
+
+    .buttons {
+        @include flex-center;
+        gap: 12px;
+
+        .cancel_btn,
+        .delete_btn {
+            display: flex;
+            width: 105px;
+            height: 36px;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .cancel_btn {
+            color: #111827;
+            border-radius: 10px;
+            border: 1px solid #D2D5DA;
+            background-color: transparent;
+
+            &:hover {
+                background-color: #f3efef;
+                // border: none;
+            }
+        }
+
+        .delete_btn {
+            border-radius: 10px;
+            border: none;
+            background: #2400FF;
+            color: #FFF;
+
+            &:hover {
+                background-color: #2103df;
+            }
+        }
+    }
+}
