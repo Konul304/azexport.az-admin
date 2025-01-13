@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styles from "@/styles/componentStyles/OrdersPageContainer.module.scss";
 import Table from './Table/Table';
 import { delete_icon, edit, infoArrow, tableNextArrow, tablePrevArrow } from '@/public/icons';
@@ -8,9 +8,9 @@ import Image from 'next/image';
 import PlatformInfoModal from './PlatformInfoModal';
 import DeleteModal from './Common/DeleteModal';
 import AddNoteModal from './Common/AddNoteModal';
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, PaginationState } from '@tanstack/react-table';
 import { useSelector } from 'react-redux';
-import { Pagination } from '../(store)/storeInterface';
+import { Pagination, SearchState } from '../(store)/storeInterface';
 import ReactPaginate from 'react-paginate';
 
 
@@ -23,16 +23,16 @@ const OrdersPageContainer = () => {
     const [pageIndex, setPageIndex] = useState<any>(0);
     const [paginationDetails, setPaginationDetails] = useState<any>({});
     const [paginationState, setPaginationState] = useState({
-      pageSize: 10,
-      pageIndex: 0,
+        pageSize: 10,
+        pageIndex: 0,
     });
     const forcePaginationNum = useSelector(
         (store: { pagination: Pagination }) => store.pagination.forcePageNum
-      );
-      const [paginationRange, setPaginationRange] = useState({
+    );
+    const [paginationRange, setPaginationRange] = useState({
         startOfRange: 1,
         endOfRange: 10,
-      });
+    });
 
     const getStatusStyles = (text: string) => {
         switch (text) {
@@ -49,15 +49,28 @@ const OrdersPageContainer = () => {
         }
     };
 
+    const searchValue = useSelector(
+        (store: { search: SearchState }) => store.search.searchValue
+    );
+
 
     const handlePageClick = ({ selected }: any) => {
         const startOfRange = selected * 10 + 1;
         const endOfRange = startOfRange + 9;
         setPaginationRange({ startOfRange, endOfRange });
         setPaginationState((current: any) => {
-          return { ...current, pageIndex: +selected };
+            return { ...current, pageIndex: +selected };
         });
-      };
+    };
+
+    useEffect(() => {
+        if (setPaginationState) {
+            setPaginationState((prevState: PaginationState) => ({
+                ...prevState,
+                pageIndex: 0, // Reset to the first page
+            }));
+        }
+    }, [searchValue, setPaginationState]);
 
     const tableData = [
         {
@@ -422,43 +435,43 @@ const OrdersPageContainer = () => {
                 // loading={isLoading}
                 />
                 <div className={styles.table_pagination}>
-            <div className={styles.pagination_details_txt}>
-              Axtarış nəticəsi: {tableData?.length} məlumatın{" "}
-              {paginationRange.startOfRange} - {paginationRange.endOfRange}{" "}
-              aralığı
-            </div>
-            <div className={styles.pagination}>
-              <ReactPaginate
-                pageCount={Math.ceil(tableData?.length / 10)}
-                breakLabel={
-                  <div className={`${styles.pagination_page_number}`}>...</div>
-                }
-                previousLabel={
-                  <button
-                    className={styles.pagination_button}
-                    // disabled={!paginationDetails?.canPreviousPage}
-                  >
-                    {tablePrevArrow}
-                  </button>
-                }
-                nextLabel={
-                  <button
-                    className={styles.pagination_button}
-                    // disabled={!paginationDetails?.canNextPage}
-                  >
-                    {tableNextArrow}
-                  </button>
-                }
-                onPageChange={handlePageClick}
-                pageRangeDisplayed={10}
-                marginPagesDisplayed={1}
-                containerClassName={styles.table_pagination}
-                activeClassName={styles.pagination_active_page_number}
-                pageLinkClassName={styles.pagination_page_number}
-                forcePage={forcePaginationNum === true ? 0 : undefined}
-              />
-            </div>
-          </div>
+                    <div className={styles.pagination_details_txt}>
+                        Axtarış nəticəsi: {tableData?.length} məlumatın{" "}
+                        {paginationRange.startOfRange} - {paginationRange.endOfRange}{" "}
+                        aralığı
+                    </div>
+                    <div className={styles.pagination}>
+                        <ReactPaginate
+                            pageCount={Math.ceil(tableData?.length / 10)}
+                            breakLabel={
+                                <div className={`${styles.pagination_page_number}`}>...</div>
+                            }
+                            previousLabel={
+                                <button
+                                    className={styles.pagination_button}
+                                // disabled={!paginationDetails?.canPreviousPage}
+                                >
+                                    {tablePrevArrow}
+                                </button>
+                            }
+                            nextLabel={
+                                <button
+                                    className={styles.pagination_button}
+                                // disabled={!paginationDetails?.canNextPage}
+                                >
+                                    {tableNextArrow}
+                                </button>
+                            }
+                            onPageChange={handlePageClick}
+                            pageRangeDisplayed={10}
+                            marginPagesDisplayed={1}
+                            containerClassName={styles.table_pagination}
+                            activeClassName={styles.pagination_active_page_number}
+                            pageLinkClassName={styles.pagination_page_number}
+                            forcePage={forcePaginationNum === true ? 0 : undefined}
+                        />
+                    </div>
+                </div>
                 {openDeleteModal && <DeleteModal openDeleteModal={openDeleteModal} setOpenDeleteModal={setOpenDeleteModal} />}
                 {openAddNoteModal && <AddNoteModal openAddNoteModal={openAddNoteModal} setOpenAddNoteModal={setOpenAddNoteModal} />}
             </div>

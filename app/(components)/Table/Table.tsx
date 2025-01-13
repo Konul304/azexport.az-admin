@@ -73,9 +73,9 @@ const Table = ({
     // const [globalFilter, setGlobalFilter] = React.useState('');
 
     //   const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
-      const searchValue = useSelector(
+    const searchValue = useSelector(
         (store: { search: SearchState }) => store.search.searchValue
-      );
+    );
     const dispatch = useDispatch();
 
     const table = useReactTable({
@@ -101,13 +101,12 @@ const Table = ({
         state: {
             grouping,
             columnFilters,
-              globalFilter: searchValue,
+            globalFilter: searchValue,
             columnOrder,
             pagination: paginationState ?? undefined,
             sorting,
         },
     });
-
     useEffect(() => {
         if (setPaginationDetails) {
             setPaginationDetails({
