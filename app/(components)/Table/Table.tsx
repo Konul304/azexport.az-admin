@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-// import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -16,9 +16,9 @@ import {
     ColumnOrderState,
     SortingState,
 } from "@tanstack/react-table";
-// import { setPaginationPageCount } from "@/app/(store)/(slices)/paginationSlice";
-// import { setSearchValue } from "@/app/(store)/(slices)/searchSlice";
-// import { Pagination, SearchState } from "@/app/(store)/storeInterface";
+import { setPaginationPageCount } from "../../(store)/(slices)/paginationSlice";
+import { setSearchValue } from "../../(store)/(slices)/searchSlice";
+import { Pagination, SearchState } from "../../(store)/storeInterface";
 import CustomTable from "./CustomTable";
 // import { useSkipper } from "./hooks";
 // import DefaultColumn, { fuzzyFilter, getTableMeta } from "./tableModels";
@@ -39,11 +39,11 @@ interface TableProps {
     className?: string;
     tableData: any;
     sorting?: SortingState;
-    // paginationState?: PaginationState;
-    // setPaginationState?: React.Dispatch<any>;
-    // setPaginationDetails?: React.Dispatch<
-    //     React.SetStateAction<PaginationDetails>
-    // >;
+    paginationState?: PaginationState;
+    setPaginationState?: React.Dispatch<any>;
+    setPaginationDetails?: React.Dispatch<
+        React.SetStateAction<PaginationDetails>
+    >;
     setSorting?: React.Dispatch<React.SetStateAction<SortingState>>;
     setPageCount?: React.Dispatch<React.SetStateAction<number>>;
     loading?: boolean;
@@ -53,9 +53,9 @@ const Table = ({
     columns,
     className,
     tableData,
-    // paginationState,
-    // setPaginationState,
-    // setPaginationDetails,
+    paginationState,
+    setPaginationState,
+    setPaginationDetails,
     sorting,
     setSorting,
     loading,
@@ -73,10 +73,10 @@ const Table = ({
     // const [globalFilter, setGlobalFilter] = React.useState('');
 
     //   const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
-    //   const searchValue = useSelector(
-    //     (store: { search: SearchState }) => store.search.searchValue
-    //   );
-    //   const dispatch = useDispatch();
+      const searchValue = useSelector(
+        (store: { search: SearchState }) => store.search.searchValue
+      );
+    const dispatch = useDispatch();
 
     const table = useReactTable({
         data: tableData,
@@ -89,11 +89,11 @@ const Table = ({
         getSortedRowModel: getSortedRowModel(),
         getGroupedRowModel: getGroupedRowModel(),
         getFacetedRowModel: getFacetedRowModel(),
-        // onGlobalFilterChange: setSearchValue,
+        onGlobalFilterChange: setSearchValue,
         enableColumnResizing: false,
         autoResetPageIndex: false,
         columnResizeMode: "onChange",
-        // onPaginationChange: setPaginationState,
+        onPaginationChange: setPaginationState,
         onSortingChange: setSorting,
         // manualPagination: true,
         // Provide our updateData function to our table meta
@@ -101,28 +101,28 @@ const Table = ({
         state: {
             grouping,
             columnFilters,
-            //   globalFilter: searchValue,
+              globalFilter: searchValue,
             columnOrder,
-            // pagination: paginationState ?? undefined,
+            pagination: paginationState ?? undefined,
             sorting,
         },
     });
 
-    // useEffect(() => {
-    //     if (setPaginationDetails) {
-    //         setPaginationDetails({
-    //             canNextPage: table.getCanNextPage(),
-    //             canPreviousPage: table.getCanPreviousPage(),
-    //             pageCount: table.getPageCount(),
-    //         });
-    //     }
-    // }, [setPaginationDetails, table.getState().pagination]);
+    useEffect(() => {
+        if (setPaginationDetails) {
+            setPaginationDetails({
+                canNextPage: table.getCanNextPage(),
+                canPreviousPage: table.getCanPreviousPage(),
+                pageCount: table.getPageCount(),
+            });
+        }
+    }, [setPaginationDetails, table.getState().pagination]);
 
-    //   useEffect(() => {
-    //     dispatch(
-    //       setPaginationPageCount(table?.getFilteredRowModel()?.rows?.length)
-    //     );
-    //   }, [table?.getFilteredRowModel()?.rows?.length]);
+    useEffect(() => {
+        dispatch(
+            setPaginationPageCount(table?.getFilteredRowModel()?.rows?.length)
+        );
+    }, [table?.getFilteredRowModel()?.rows?.length]);
 
     return (
         <CustomTable
