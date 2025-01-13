@@ -61,6 +61,7 @@
     padding: 22px;
     border-radius: 10px;
     background: #FFF;
+    font-family: Inter,sans-serif;
     position: absolute;
     z-index: 2;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -108,13 +109,18 @@
             font-size: 13.209px;
             font-weight: 400;
         }
+        svg{
+            path{
+                stroke:#2400FF;
+            }
+        }
 
         .titles {
-            color: #2400FF;
+            color: #67778C;
         }
 
         .descriptions {
-            color: #67778C;
+            color: #2400FF;
 
             .description {
                 display: flex;
@@ -132,3 +138,4 @@
         }
     }
 }
+

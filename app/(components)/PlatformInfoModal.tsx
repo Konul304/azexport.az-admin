@@ -1,7 +1,7 @@
 "use client";
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from "@/styles/componentStyles/OrdersPageContainer.module.scss";
-import { calendar, cancel, email, paperClip, phone, user_icon } from '@/public/icons';
+import { calendar, cancel, email, paperClip, phone, platform_icon, user_icon } from '@/public/icons';
 
 export interface PlatformInfoModalProps {
     setOpenRowId: (open: any) => void;
@@ -13,10 +13,33 @@ export interface PlatformInfoModalProps {
         phoneNumber: string;
         email: string;
     };
+    position?: { top: number; left: number };
 }
 
-const PlatformInfoModal = ({ setOpenRowId, infoData }: PlatformInfoModalProps) => {
+const PlatformInfoModal = ({ setOpenRowId, infoData, position }: PlatformInfoModalProps) => {
     const modalRef = useRef<HTMLDivElement>(null);
+    const [modalStyle, setModalStyle] = useState({ top: 0, left: 0 });
+
+
+    useEffect(() => {
+        // Adjust modal position dynamically
+        if (position && modalRef.current) {
+            const viewportHeight = window.innerHeight;
+            const viewportWidth = window.innerWidth;
+            const modalRect = modalRef.current.getBoundingClientRect();
+
+            const adjustedTop =
+                position.top + modalRect.height > viewportHeight
+                    ? viewportHeight - modalRect.height - 10 // Ensure it's within bounds
+                    : position.top;
+            const adjustedLeft =
+                position.left + modalRect.width > viewportWidth
+                    ? viewportWidth - modalRect.width - 10 // Ensure it's within bounds
+                    : position.left;
+
+            setModalStyle({ top: adjustedTop, left: adjustedLeft });
+        }
+    }, [position]);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -32,9 +55,14 @@ const PlatformInfoModal = ({ setOpenRowId, infoData }: PlatformInfoModalProps) =
     }, [setOpenRowId]);
     return (
         <>
-            <div ref={modalRef} className={styles.platform_info_container}>
+            <div style={{
+                position: "absolute", // Ensure modal uses absolute positioning
+                top: modalStyle.top,
+                left: modalStyle.left,
+                zIndex: 1000,
+            }} ref={modalRef} className={styles.platform_info_container}>
                 <div className={styles.dropdown_header}>
-                    <div>Sifarişçi məlumatları</div>
+                    <div style={{ color: '#2400FF' }}>Sifarişçi məlumatları</div>
                     <div onClick={() => {
                         setOpenRowId(null);
                     }}>{cancel}</div>
@@ -51,7 +79,7 @@ const PlatformInfoModal = ({ setOpenRowId, infoData }: PlatformInfoModalProps) =
                     </div>
                     <div className={styles.descriptions}>
                         <div className={styles.description}>
-                            <div className={styles.desc_icon}>{user_icon}</div>
+                            <div className={styles.desc_icon}>{platform_icon}</div>
                             <div className={styles.desc_text}>{infoData?.platform}</div>
                         </div>
                         <div className={styles.description}>

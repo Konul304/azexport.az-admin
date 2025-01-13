@@ -10,6 +10,16 @@
   background-color: #FAFAFB;
 }
 
+.filter_btn {
+  width: 32px;
+  height: 32px;
+  @include flex-center;
+  background-color: #fff;
+  border-radius: 10px;
+  border: 1px solid #D2D5DA;
+  background: #FFF;
+}
+
 .navbar_user {
   margin: 0 auto;
   width: 154rem;
@@ -27,8 +37,8 @@
 
 .input_container {
   position: relative;
-  width: 43.4rem;
-  height: 4.8rem;
+  width: 280px;
+  height: 36px;
   border-radius: 10px;
   border: 0.75px solid #D2D5DA;
   background: #FFF;
@@ -37,18 +47,18 @@
 
 .search_icon {
   position: absolute;
-  top: 1.5rem;
+  top: 10px;
   left: 1.5rem;
 }
 
 .input {
-  width: 37rem;
+  width: 220px;
   border: none;
   background: transparent;
   font-size: 1.6rem;
   position: absolute;
   left: 4.2rem;
-  top: 1.4rem;
+  top: 9px;
 }
 
 .input:focus {
@@ -56,7 +66,7 @@
 }
 
 .drop_flex {
-  height: 10.4rem;
+  // height: 5.4rem;
 
   .dropdown_menu {
     cursor: pointer;
@@ -89,71 +99,71 @@
 }
 
 
-  .profile_con {
+.profile_con {
+  display: flex;
+  gap: 2rem;
+  cursor: pointer;
+
+  .popover_content {
     display: flex;
-    gap: 2rem;
-    cursor: pointer;
+    align-items: center;
+    gap: 4px;
 
-    .popover_content {
-      display: flex;
-      align-items: center;
-      gap: 4px;
+    .profile_photo {
+      width: 4.8rem;
+      height: 4.8rem;
+      border-radius: 50%;
 
-      .profile_photo {
+      .photo {
         width: 4.8rem;
         height: 4.8rem;
         border-radius: 50%;
-
-        .photo {
-          width: 4.8rem;
-          height: 4.8rem;
-          border-radius: 50%;
-          object-fit: cover;
-          // width: fit-content;
-        }
-      }
-
-      .profile_name {
-        .fullname {
-          // display: block;
-          font-size: 1.6rem;
-          font-style: normal;
-          font-weight: 700;
-          line-height: normal;
-          color: #3c3c3c;
-          max-width: 27rem;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
-
-        .fullname_user {
-          // display: block;
-          font-weight: 700;
-          font-size: 1.6rem;
-          color: #fff;
-          max-width: 27rem;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
-
-        .email {
-          color: #959ca3;
-          @include modal_fonts;
-        }
-
-        .email_user {
-          color: #c4c4c4;
-          font-size: 1.6rem;
-          font-style: normal;
-          font-weight: 600;
-          line-height: normal;
-        }
-      }
-
-      .dropdown_icon {
-        margin-top:2px ;
+        object-fit: cover;
+        // width: fit-content;
       }
     }
+
+    .profile_name {
+      .fullname {
+        // display: block;
+        font-size: 1.6rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        color: #3c3c3c;
+        max-width: 27rem;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .fullname_user {
+        // display: block;
+        font-weight: 700;
+        font-size: 1.6rem;
+        color: #fff;
+        max-width: 27rem;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .email {
+        color: #959ca3;
+        @include modal_fonts;
+      }
+
+      .email_user {
+        color: #c4c4c4;
+        font-size: 1.6rem;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+      }
+    }
+
+    .dropdown_icon {
+      margin-top: 2px;
+    }
+  }
 }
