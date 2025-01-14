@@ -1,17 +1,20 @@
 "use client";
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styles from "@/styles/componentStyles/OrdersPageContainer.module.scss";
 import Table from './Table/Table';
-import { delete_icon, edit, infoArrow, tableNextArrow, tablePrevArrow } from '@/public/icons';
+import { delete_icon, download, edit, infoArrow, tableNextArrow, tablePrevArrow, three_dots } from '@/public/icons';
 import aliexpress from "@/public/image.png";
 import Image from 'next/image';
 import PlatformInfoModal from './PlatformInfoModal';
 import DeleteModal from './Common/DeleteModal';
 import AddNoteModal from './Common/AddNoteModal';
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, PaginationState } from '@tanstack/react-table';
 import { useSelector } from 'react-redux';
-import { Pagination } from '../(store)/storeInterface';
+import { Pagination, SearchState } from '../(store)/storeInterface';
 import ReactPaginate from 'react-paginate';
+import { Popover } from 'antd';
+import ViewNotes from './Common/ViewNotesModal';
+import ViewNotesModal from './Common/ViewNotesModal';
 
 
 const OrdersPageContainer = () => {
@@ -19,20 +22,21 @@ const OrdersPageContainer = () => {
     const [selectedRow, setSelectedRow] = useState<number | null>(null);
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [openAddNoteModal, setOpenAddNoteModal] = useState(false);
+    const [openViewNotesModal, setOpenViewNotesModal] = useState(false);
     const [modalPosition, setModalPosition] = useState<any>();
     const [pageIndex, setPageIndex] = useState<any>(0);
     const [paginationDetails, setPaginationDetails] = useState<any>({});
     const [paginationState, setPaginationState] = useState({
-      pageSize: 10,
-      pageIndex: 0,
+        pageSize: 10,
+        pageIndex: 0,
     });
     const forcePaginationNum = useSelector(
         (store: { pagination: Pagination }) => store.pagination.forcePageNum
-      );
-      const [paginationRange, setPaginationRange] = useState({
+    );
+    const [paginationRange, setPaginationRange] = useState({
         startOfRange: 1,
         endOfRange: 10,
-      });
+    });
 
     const getStatusStyles = (text: string) => {
         switch (text) {
@@ -49,15 +53,28 @@ const OrdersPageContainer = () => {
         }
     };
 
+    const searchValue = useSelector(
+        (store: { search: SearchState }) => store.search.searchValue
+    );
+
 
     const handlePageClick = ({ selected }: any) => {
         const startOfRange = selected * 10 + 1;
         const endOfRange = startOfRange + 9;
         setPaginationRange({ startOfRange, endOfRange });
         setPaginationState((current: any) => {
-          return { ...current, pageIndex: +selected };
+            return { ...current, pageIndex: +selected };
         });
-      };
+    };
+
+    useEffect(() => {
+        if (setPaginationState) {
+            setPaginationState((prevState: PaginationState) => ({
+                ...prevState,
+                pageIndex: 0, // Reset to the first page
+            }));
+        }
+    }, [searchValue, setPaginationState]);
 
     const tableData = [
         {
@@ -291,6 +308,28 @@ const OrdersPageContainer = () => {
         email: 'aliexpressseller@gmail.com'
     }
 
+    const handleContent = (e: any) => (
+        <div className={styles.three_dots} >
+            <p className={styles.item} style={{ marginBottom: '8px', marginTop: '0px' }}
+                onClick={() => {
+                    setOpenViewNotesModal(true);
+                    setSelectedRow(e);
+                }}
+            >
+                Qeydlərə bax
+            </p>
+            <p className={styles.item} style={{ marginBottom: '0px', marginTop: '0px' }}
+                onClick={() => {
+                    setOpenAddNoteModal(true)
+                    setSelectedRow(e);
+                }}
+            >
+                Qeyd Yarat
+            </p>
+        </div>
+    );
+
+
     const allTableColumns: ColumnDef<any>[] = useMemo(
         () => [
             {
@@ -389,6 +428,16 @@ const OrdersPageContainer = () => {
                         >
                             {edit}
                         </div>
+                        <div>
+                            <Popover
+                                placement="bottomRight"
+                                content={handleContent(info.row.original)}
+                                arrow={false}
+                                trigger="click"
+                            >
+                                <div style={{ cursor: 'pointer' }} className={styles.three_dots}>{three_dots}</div>
+                            </Popover>
+                        </div>
                         <div
                             className={styles.td_remove_button}
                             onClick={() => {
@@ -409,7 +458,14 @@ const OrdersPageContainer = () => {
 
     return (
         <>
-            <div className={styles.table_title}>Sifarişlər</div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center',marginBottom:'42px' }}>
+                <div className={styles.table_title}>Sifarişlər</div>
+                <div className={styles.buttons_container}>
+                    <div className={styles.download_btn}>{download}İxrac et</div>
+                    <div className={styles.send_btn}>İstehsalçıya göndər</div>
+                    <div className={styles.add_new_order_btn}>Yeni sifariş yarat</div>
+                </div>
+            </div>
             <div className={styles.table_container}>
                 <Table
                     columns={allTableColumns}
@@ -422,45 +478,46 @@ const OrdersPageContainer = () => {
                 // loading={isLoading}
                 />
                 <div className={styles.table_pagination}>
-            <div className={styles.pagination_details_txt}>
-              Axtarış nəticəsi: {tableData?.length} məlumatın{" "}
-              {paginationRange.startOfRange} - {paginationRange.endOfRange}{" "}
-              aralığı
-            </div>
-            <div className={styles.pagination}>
-              <ReactPaginate
-                pageCount={Math.ceil(tableData?.length / 10)}
-                breakLabel={
-                  <div className={`${styles.pagination_page_number}`}>...</div>
-                }
-                previousLabel={
-                  <button
-                    className={styles.pagination_button}
-                    // disabled={!paginationDetails?.canPreviousPage}
-                  >
-                    {tablePrevArrow}
-                  </button>
-                }
-                nextLabel={
-                  <button
-                    className={styles.pagination_button}
-                    // disabled={!paginationDetails?.canNextPage}
-                  >
-                    {tableNextArrow}
-                  </button>
-                }
-                onPageChange={handlePageClick}
-                pageRangeDisplayed={10}
-                marginPagesDisplayed={1}
-                containerClassName={styles.table_pagination}
-                activeClassName={styles.pagination_active_page_number}
-                pageLinkClassName={styles.pagination_page_number}
-                forcePage={forcePaginationNum === true ? 0 : undefined}
-              />
-            </div>
-          </div>
+                    <div className={styles.pagination_details_txt}>
+                        Axtarış nəticəsi: {tableData?.length} məlumatın{" "}
+                        {paginationRange.startOfRange} - {paginationRange.endOfRange}{" "}
+                        aralığı
+                    </div>
+                    <div className={styles.pagination}>
+                        <ReactPaginate
+                            pageCount={Math.ceil(tableData?.length / 10)}
+                            breakLabel={
+                                <div className={`${styles.pagination_page_number}`}>...</div>
+                            }
+                            previousLabel={
+                                <button
+                                    className={styles.pagination_button}
+                                // disabled={!paginationDetails?.canPreviousPage}
+                                >
+                                    {tablePrevArrow}
+                                </button>
+                            }
+                            nextLabel={
+                                <button
+                                    className={styles.pagination_button}
+                                // disabled={!paginationDetails?.canNextPage}
+                                >
+                                    {tableNextArrow}
+                                </button>
+                            }
+                            onPageChange={handlePageClick}
+                            pageRangeDisplayed={10}
+                            marginPagesDisplayed={1}
+                            containerClassName={styles.table_pagination}
+                            activeClassName={styles.pagination_active_page_number}
+                            pageLinkClassName={styles.pagination_page_number}
+                            forcePage={forcePaginationNum === true ? 0 : undefined}
+                        />
+                    </div>
+                </div>
                 {openDeleteModal && <DeleteModal openDeleteModal={openDeleteModal} setOpenDeleteModal={setOpenDeleteModal} />}
                 {openAddNoteModal && <AddNoteModal openAddNoteModal={openAddNoteModal} setOpenAddNoteModal={setOpenAddNoteModal} />}
+                {openViewNotesModal && <ViewNotesModal openViewNotesModal={openViewNotesModal} setOpenViewNotesModal={setOpenViewNotesModal} />}
             </div>
         </>
     )
