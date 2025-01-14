@@ -1,7 +1,7 @@
 .add_note_modal_container {
     .title {
         color: #2B3644;
-        // font-family: "SF Pro Display";
+        font-family: Sf Pro Display;
         font-size: 16px;
         font-weight: 500;
         line-height: 140%;
@@ -20,7 +20,7 @@
     .save_btn {
         color: #2400FF;
         text-align: right;
-        // font-family: "SF Pro Display";
+        font-family: Sf Pro Display;
         font-size: 14px;
         font-style: normal;
         font-weight: 400;
@@ -30,7 +30,7 @@
 
     textarea {
         resize: none;
-        font-family: Inter,sans-serif;
+        font-family: Sf Pro Display;
         padding: 16px;
         color: #2B3644;
         font-size: 16px;
@@ -38,4 +38,56 @@
         font-weight: 400;
         line-height: 140%;
     }
+}
+
+.view_notes_modal_container {
+    .modal_header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .title {
+            color: #67778C;
+            font-family: SF Pro Display;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .delete {
+            color: #2400FF;
+            font-family: SF Pro Display;
+            font-size: 14px;
+            font-weight: 400;
+            cursor: pointer;
+        }
+    }
+
+    .notes_container {
+        margin-top: 30px;
+        display: flex;
+        flex-direction: column;
+        row-gap: 34px;
+
+        .row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+
+            .note {
+                color: rgba(103, 119, 140, 0.70);
+                font-family: SF Pro Display;
+                font-size: 12px;
+                font-weight: 400;
+            }
+        }
+    }
+}
+
+.dashed_line {
+    border-top: 1px dashed #ccc;
+    margin-top: 10px;
+    width: 100%;
+    position: absolute;
+    left: 0;
 }

@@ -2,7 +2,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import styles from "@/styles/componentStyles/OrdersPageContainer.module.scss";
 import Table from './Table/Table';
-import { delete_icon, edit, infoArrow, tableNextArrow, tablePrevArrow } from '@/public/icons';
+import { delete_icon, download, edit, infoArrow, tableNextArrow, tablePrevArrow, three_dots } from '@/public/icons';
 import aliexpress from "@/public/image.png";
 import Image from 'next/image';
 import PlatformInfoModal from './PlatformInfoModal';
@@ -12,6 +12,9 @@ import { ColumnDef, PaginationState } from '@tanstack/react-table';
 import { useSelector } from 'react-redux';
 import { Pagination, SearchState } from '../(store)/storeInterface';
 import ReactPaginate from 'react-paginate';
+import { Popover } from 'antd';
+import ViewNotes from './Common/ViewNotesModal';
+import ViewNotesModal from './Common/ViewNotesModal';
 
 
 const OrdersPageContainer = () => {
@@ -19,6 +22,7 @@ const OrdersPageContainer = () => {
     const [selectedRow, setSelectedRow] = useState<number | null>(null);
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [openAddNoteModal, setOpenAddNoteModal] = useState(false);
+    const [openViewNotesModal, setOpenViewNotesModal] = useState(false);
     const [modalPosition, setModalPosition] = useState<any>();
     const [pageIndex, setPageIndex] = useState<any>(0);
     const [paginationDetails, setPaginationDetails] = useState<any>({});
@@ -304,6 +308,28 @@ const OrdersPageContainer = () => {
         email: 'aliexpressseller@gmail.com'
     }
 
+    const handleContent = (e: any) => (
+        <div className={styles.three_dots} >
+            <p className={styles.item} style={{ marginBottom: '8px', marginTop: '0px' }}
+                onClick={() => {
+                    setOpenViewNotesModal(true);
+                    setSelectedRow(e);
+                }}
+            >
+                Qeydlərə bax
+            </p>
+            <p className={styles.item} style={{ marginBottom: '0px', marginTop: '0px' }}
+                onClick={() => {
+                    setOpenAddNoteModal(true)
+                    setSelectedRow(e);
+                }}
+            >
+                Qeyd Yarat
+            </p>
+        </div>
+    );
+
+
     const allTableColumns: ColumnDef<any>[] = useMemo(
         () => [
             {
@@ -402,6 +428,16 @@ const OrdersPageContainer = () => {
                         >
                             {edit}
                         </div>
+                        <div>
+                            <Popover
+                                placement="bottomRight"
+                                content={handleContent(info.row.original)}
+                                arrow={false}
+                                trigger="click"
+                            >
+                                <div style={{ cursor: 'pointer' }} className={styles.three_dots}>{three_dots}</div>
+                            </Popover>
+                        </div>
                         <div
                             className={styles.td_remove_button}
                             onClick={() => {
@@ -422,7 +458,14 @@ const OrdersPageContainer = () => {
 
     return (
         <>
-            <div className={styles.table_title}>Sifarişlər</div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center',marginBottom:'42px' }}>
+                <div className={styles.table_title}>Sifarişlər</div>
+                <div className={styles.buttons_container}>
+                    <div className={styles.download_btn}>{download}İxrac et</div>
+                    <div className={styles.send_btn}>İstehsalçıya göndər</div>
+                    <div className={styles.add_new_order_btn}>Yeni sifariş yarat</div>
+                </div>
+            </div>
             <div className={styles.table_container}>
                 <Table
                     columns={allTableColumns}
@@ -474,6 +517,7 @@ const OrdersPageContainer = () => {
                 </div>
                 {openDeleteModal && <DeleteModal openDeleteModal={openDeleteModal} setOpenDeleteModal={setOpenDeleteModal} />}
                 {openAddNoteModal && <AddNoteModal openAddNoteModal={openAddNoteModal} setOpenAddNoteModal={setOpenAddNoteModal} />}
+                {openViewNotesModal && <ViewNotesModal openViewNotesModal={openViewNotesModal} setOpenViewNotesModal={setOpenViewNotesModal} />}
             </div>
         </>
     )

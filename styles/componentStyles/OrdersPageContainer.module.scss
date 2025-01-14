@@ -2,11 +2,60 @@
 
 .table_title {
     color: #2B3644;
-    font-family: Inter, sans-serif;
+    font-family: Sf Pro Display;
     font-size: 18px;
     font-weight: 500;
     line-height: 145%;
-    margin-bottom: 37px;
+}
+
+.buttons_container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .download_btn,
+    .add_new_order_btn {
+        color: rgba(103, 119, 140, 0.70);
+        font-family: SF Pro Display;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 145%;
+        cursor: pointer;
+    }
+
+    .download_btn {
+        width: 90px;
+        height: 36px;
+        border-radius: 10px;
+        border: 1px solid #D2D5DA;
+        background: #FFF;
+        @include flex-center;
+        gap: 7px;
+    }
+
+    .send_btn {
+        width: 160px;
+        height: 36px;
+        border-radius: 10px;
+        background: #2400FF;
+        color: #FFF;
+        font-family: SF Pro Display;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 20px;
+        @include flex-center;
+        cursor: pointer;
+    }
+
+    .add_new_order_btn {
+        width: 160px;
+        height: 36px;
+        @include flex-center;
+        border-radius: 10px;
+        border: 1px solid #D2D5DA;
+        background: #F3F4F6;
+        color: #2400FF;
+    }
 }
 
 .table_buttons {
@@ -61,7 +110,7 @@
     padding: 22px;
     border-radius: 10px;
     background: #FFF;
-    font-family: Inter,sans-serif;
+    font-family: Sf Pro Display;
     position: absolute;
     z-index: 2;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -71,16 +120,14 @@
         justify-content: space-between;
         align-items: center;
         color: #67778C;
-        // font-family: "SF Pro Display";
+        font-family: Sf Pro Display;
         font-size: 17.612px;
         font-weight: 500;
         line-height: 140%;
-        /* 24.656px */
     }
 
     .dashed_line {
         border-top: 1px dashed #ccc;
-        /* Add a dashed line */
         margin-top: 10px;
         width: 100%;
         position: absolute;
@@ -109,9 +156,10 @@
             font-size: 13.209px;
             font-weight: 400;
         }
-        svg{
-            path{
-                stroke:#2400FF;
+
+        svg {
+            path {
+                stroke: #2400FF;
             }
         }
 
@@ -139,3 +187,15 @@
     }
 }
 
+.three_dots {
+    cursor: pointer;
+
+    .item {
+        padding: 10px;
+
+        &:hover {
+            border-radius: 10px;
+            background-color: #f3efef;
+        }
+    }
+}

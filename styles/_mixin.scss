@@ -50,6 +50,7 @@
 
   .pagination_details_txt {
     @include modal_fonts;
+    font-family: Sf Pro Display;
     color: #959ca3 !important;
   }
 
@@ -84,6 +85,7 @@
         cursor: pointer;
         @include flex-center;
         @include modal_fonts;
+        font-family: Sf Pro Display;
         font-weight: 400;
 
         a {
