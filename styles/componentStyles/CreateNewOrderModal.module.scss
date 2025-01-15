@@ -1,0 +1,111 @@
+.create_order_container {
+    font-family: SF Pro Display;
+    padding: 80.5px 98.5px;
+
+    .title {
+        color: #2400FF;
+        font-size: 28px;
+        font-weight: 500;
+        line-height: 20px;
+        margin-bottom: 14px;
+    }
+
+    .description {
+        color: rgba(103, 119, 140, 0.70);
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 20px;
+        margin-bottom: 50px;
+    }
+
+    .form_container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        row-gap: 30px;
+        column-gap: 95px;
+
+        .input {
+            width: 344px;
+            height: 42px;
+            border-radius: 6px;
+            border: 1px solid #2400FF;
+            background: #FFF;
+        }
+    }
+
+    .contact_header {
+        color: #2400FF;
+        font-size: 24px;
+        font-weight: 400;
+        line-height: 20px;
+        margin-bottom: 42px;
+        margin-top: 69px;
+    }
+
+    svg {
+        path {
+            stroke: #2400FF;
+        }
+    }
+
+    .form_buttons {
+        display: flex;
+        gap: 22px;
+        margin-top: 43px;
+        justify-content: flex-end;
+
+        .cancel_btn,
+        .save_btn {
+            width: 116px;
+            height: 36px;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .cancel_btn {
+            color: #2B3644;
+            border-radius: 6px;
+            border: 1px solid #D2D5DA;
+            background: #F4F6F8;
+
+            &:hover {
+                background-color: #eeeff0;
+            }
+        }
+
+        .save_btn {
+            color: #fff;
+            border-radius: 6px;
+            border: none;
+            background: #2400FF;
+
+            &:hover {
+                background-color: #2103df;
+            }
+        }
+    }
+
+}
+
+.select_footer {
+    font-size: 14px;
+    font-weight: 400;
+    width: 318px;
+    display: flex;
+    justify-content: space-between;
+
+    .select_all {
+        color: #2400FF;
+        cursor: pointer;
+    }
+
+    .clear {
+        color: #67778C;
+        cursor: pointer;
+    }
+}

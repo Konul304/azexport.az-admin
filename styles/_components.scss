@@ -19,7 +19,7 @@
 }
 
 .ant-modal-content {
-    padding: 20px !important;
+    padding: 0px !important;
 }
 
 .ant-modal {
@@ -30,12 +30,22 @@
     font-family: Sf Pro Display;
 }
 
-// .custom-checkbox:checked {
-//     border-color: #11094b !important;
-//     background-color: #11094b !important;
-// }
+.ant-form-item-label{
+    white-space: nowrap !important;
+}
 
-// input[type="checkbox"] {
-//     border-color: #11094b !important;
-//     background-color: #11094b !important;
-// }
+.ant-col-8 {
+    max-width: 200px !important;
+}
+
+.ant-col-16{
+    max-width: 344px !important;
+}
+
+.ant-select-selection-wrap{
+    align-self: center !important;
+}
+
+.ant-form-item{
+    margin-bottom: 0px !important;
+}

@@ -3,8 +3,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import styles from "@/styles/componentStyles/OrdersPageContainer.module.scss";
 import Table from './Table/Table';
 import { delete_icon, download, edit, infoArrow, tableNextArrow, tablePrevArrow, three_dots } from '@/public/icons';
-import aliexpress from "@/public/image.png";
-import Image from 'next/image';
 import PlatformInfoModal from './PlatformInfoModal';
 import DeleteModal from './Common/DeleteModal';
 import AddNoteModal from './Common/AddNoteModal';
@@ -15,6 +13,7 @@ import ReactPaginate from 'react-paginate';
 import { Popover } from 'antd';
 import ViewNotes from './Common/ViewNotesModal';
 import ViewNotesModal from './Common/ViewNotesModal';
+import CreateNewOrderModal from './CreateNewOrderModal';
 
 
 const OrdersPageContainer = () => {
@@ -23,6 +22,8 @@ const OrdersPageContainer = () => {
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [openAddNoteModal, setOpenAddNoteModal] = useState(false);
     const [openViewNotesModal, setOpenViewNotesModal] = useState(false);
+    const [openCreateNewOrderModal, setOpenCreateNewOrderModal] = useState(false);
+    const [modalAction, setModalAction] = useState<string>('');
     const [modalPosition, setModalPosition] = useState<any>();
     const [pageIndex, setPageIndex] = useState<any>(0);
     const [paginationDetails, setPaginationDetails] = useState<any>({});
@@ -376,7 +377,6 @@ const OrdersPageContainer = () => {
                 header: "Platforma",
                 cell: (info: any) =>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                        <div><Image src={aliexpress} width={15} height={15} alt='logo' style={{ marginTop: '5px' }} /></div>
                         <div>{info.getValue()}</div>
                         <div style={{ cursor: 'pointer', marginTop: '6px' }}>
                             <div onClick={(e) => {
@@ -423,7 +423,8 @@ const OrdersPageContainer = () => {
                             className={styles.td_edit_button}
                             onClick={() => {
                                 setSelectedRow(info.row.original);
-                                setOpenAddNoteModal(true);
+                                setOpenCreateNewOrderModal(true);
+                                setModalAction('edit')
                             }}
                         >
                             {edit}
@@ -458,12 +459,12 @@ const OrdersPageContainer = () => {
 
     return (
         <>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center',marginBottom:'42px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '42px' }}>
                 <div className={styles.table_title}>Sifarişlər</div>
                 <div className={styles.buttons_container}>
                     <div className={styles.download_btn}>{download}İxrac et</div>
                     <div className={styles.send_btn}>İstehsalçıya göndər</div>
-                    <div className={styles.add_new_order_btn}>Yeni sifariş yarat</div>
+                    <div className={styles.add_new_order_btn} onClick={() => { setOpenCreateNewOrderModal(true); setModalAction('create') }}>Yeni sifariş yarat</div>
                 </div>
             </div>
             <div className={styles.table_container}>
@@ -518,6 +519,7 @@ const OrdersPageContainer = () => {
                 {openDeleteModal && <DeleteModal openDeleteModal={openDeleteModal} setOpenDeleteModal={setOpenDeleteModal} />}
                 {openAddNoteModal && <AddNoteModal openAddNoteModal={openAddNoteModal} setOpenAddNoteModal={setOpenAddNoteModal} />}
                 {openViewNotesModal && <ViewNotesModal openViewNotesModal={openViewNotesModal} setOpenViewNotesModal={setOpenViewNotesModal} />}
+                <CreateNewOrderModal action={modalAction} openCreateNewOrderModal={openCreateNewOrderModal} setOpenCreateNewOrderModal={setOpenCreateNewOrderModal} />
             </div>
         </>
     )

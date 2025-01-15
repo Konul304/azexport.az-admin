@@ -21,7 +21,7 @@ const AddNoteModal = ({ openAddNoteModal, setOpenAddNoteModal }: AddNoteModalPro
                 onCancel={() => setOpenAddNoteModal(false)}>
                 <div className={styles.add_note_modal_container}>
                     <div className={styles.title}>Qeyd yeri</div>
-                    <textarea className={styles.note_textarea} name="note" id="" placeholder='Qeydlərinizi əlavə edin...'/>
+                    <textarea className={styles.note_textarea} name="note" id="" placeholder='Qeydlərinizi əlavə edin...' />
                     <div className={styles.save_btn}>Yadda saxla</div>
                 </div>
             </Modal >
