@@ -1,28 +1,27 @@
 "use client";
 
 import React, { useState } from "react";
-// import { useQuery } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
-// import Cookies from "js-cookie";
 import { debounce } from "lodash";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-
 import styles from "@/styles/componentStyles/Navbar.module.scss";
 import { filters, profil_dropdown, search } from "@/public/icons";
+import Cookies from "js-cookie";
 import { Popover, Tooltip } from "antd";
 import {
   setForcePageNum,
   setPaginationIndex,
-} from "../(store)/(slices)/paginationSlice";
+} from "../../(store)/(slices)/paginationSlice";
 import {
   setSearchValue,
-} from "../(store)/(slices)/searchSlice";
-import { Pagination, SearchState } from "../(store)/storeInterface";
+} from "../../(store)/(slices)/searchSlice";
+import { Pagination, SearchState } from "../../(store)/storeInterface";
 import profile from "@/public/defaultPP.png"
+import Filters from "./Filters";
 
 const Navbar = ({ logoProp, roleProp }: any) => {
-  const [openPopover, setOpenPopover] = useState<boolean>(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const isAdmin = roleProp === "Admin" ? true : false;
 
   const name =
@@ -46,16 +45,10 @@ const Navbar = ({ logoProp, roleProp }: any) => {
 
   const router = useRouter();
   const dispatch = useDispatch();
-  //   const pathname = usePathname();
   const paginationIndex = useSelector(
     (store: { pagination: Pagination }) =>
       store.pagination.paginationState.pageIndex
   );
-  const searchPlaceHolder = useSelector(
-    (store: { search: SearchState }) => store.search.searchPlaceHolder
-  );
-  //   const [openModal, setOpenModal] = useState<boolean>(false);
-  //   const [openAuthModal, setAuthOpenModal] = useState<boolean>(false);
   const handleInputChange = (event: any) => {
     const value = event.target.value;
     dispatch(setSearchValue(value));
@@ -66,62 +59,23 @@ const Navbar = ({ logoProp, roleProp }: any) => {
   };
   const onInputChangeDebouncer = debounce(handleInputChange, 500);
 
-  //   const signOut = () => {
-  //     Cookies.remove("crm_token");
-  //     Cookies.remove("role");
-  //     Cookies.remove("elaveNomre");
-  //     Cookies.remove("powerBIUrl");
-  //     localStorage.clear();
-  //     sessionStorage.clear();
-  //     router.push("/login");
-  //   };
+  const signOut = () => {
+    Cookies.remove("azexport_token");
+    router.push("/login");
+  };
 
-  //   useLayoutEffect(() => {
-  //     switch (pathname) {
-  //       case "/collectors":
-  //         dispatch(setSearchPlaceHolder("Axtarış"));
-  //         break;
-  //       case "/portfolios":
-  //         dispatch(setSearchPlaceHolder("Finkoda görə axtarış"));
-  //         break;
-  //       case "/admin-users":
-  //         dispatch(setSearchPlaceHolder("Axtarış"));
-  //         break;
-  //       case "/result-templates":
-  //         dispatch(setSearchPlaceHolder("Axtarış"));
-  //         break;
-  //       default:
-  //         break;
-  //     }
-  //   }, [pathname]);
 
   const popoverContent = (
     <div className={styles.drop_flex}>
       <div className={styles.dropdown_menu}
-      //   onClick={() => signOut()}
+        onClick={() => signOut()}
       >
-
         <div
-        // onClick={() => setOpenPopover(false)}
-        >Təhlükəsiz çıxış</div>
+        >Çıxış</div>
       </div>
 
     </div>
   );
-
-
-  const handleOpenPopover = (newOpen: boolean) => {
-    setOpenPopover(newOpen);
-  };
-
-  //   const { data, isLoading, isError } = useQuery(
-  //     ["profilPhoto"],
-  //     async () => await getProfilPhoto(userID),
-  //     {
-  //       refetchOnWindowFocus: false,
-  //       refetchOnMount: false,
-  //     }
-  //   );
 
   return (
     <>
@@ -142,7 +96,16 @@ const Navbar = ({ logoProp, roleProp }: any) => {
               placeholder="axtar"
             />
           </div>
-          <div className={styles.filter_btn}>{filters}</div>
+          <Popover
+            placement="bottomLeft"
+            content={<Filters open={isFilterOpen} setOpen={setIsFilterOpen} />}
+            arrow={false}
+            trigger="click"
+            open={isFilterOpen}
+          >
+            <div className={styles.filter_btn} onClick={() => setIsFilterOpen(prev => !prev)}>{filters}</div>
+          </Popover>
+
         </div>
         <div>
           <div className={styles.profile_con}>
@@ -152,8 +115,6 @@ const Navbar = ({ logoProp, roleProp }: any) => {
                 arrow={false}
                 trigger="click"
                 placement="bottomRight"
-                open={openPopover}
-                onOpenChange={handleOpenPopover}
               >
                 <div className={styles.popover_content}>
                   <div className={styles.profile_photo}>
@@ -198,11 +159,6 @@ const Navbar = ({ logoProp, roleProp }: any) => {
           </div>
         </div>
       </div>
-
-      {/* 
-      {openAuthModal && (
-        <AuthHistoryModal isOpen={openAuthModal} setIsOpen={setAuthOpenModal} />
-      )} */}
     </>
   );
 };

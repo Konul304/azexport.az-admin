@@ -8,12 +8,14 @@ import DeleteModal from './Common/DeleteModal';
 import AddNoteModal from './Common/AddNoteModal';
 import { ColumnDef, PaginationState } from '@tanstack/react-table';
 import { useSelector } from 'react-redux';
-import { Pagination, SearchState } from '../(store)/storeInterface';
+import { Pagination, SearchState } from '../../(store)/storeInterface';
 import ReactPaginate from 'react-paginate';
 import { Popover } from 'antd';
-import ViewNotes from './Common/ViewNotesModal';
 import ViewNotesModal from './Common/ViewNotesModal';
 import CreateNewOrderModal from './CreateNewOrderModal';
+import { getOrders } from '../../(api)/api';
+import { useQuery } from '@tanstack/react-query';
+import StatusModal from './Common/StatusModal';
 
 
 const OrdersPageContainer = () => {
@@ -25,7 +27,6 @@ const OrdersPageContainer = () => {
     const [openCreateNewOrderModal, setOpenCreateNewOrderModal] = useState(false);
     const [modalAction, setModalAction] = useState<string>('');
     const [modalPosition, setModalPosition] = useState<any>();
-    const [pageIndex, setPageIndex] = useState<any>(0);
     const [paginationDetails, setPaginationDetails] = useState<any>({});
     const [paginationState, setPaginationState] = useState({
         pageSize: 10,
@@ -68,6 +69,16 @@ const OrdersPageContainer = () => {
         });
     };
 
+
+    const { data, isLoading, isFetching, refetch } = useQuery(
+        ["ordersData"],
+        async () => await getOrders(),
+        {
+            refetchOnWindowFocus: false,
+        },
+    );
+
+
     useEffect(() => {
         if (setPaginationState) {
             setPaginationState((prevState: PaginationState) => ({
@@ -76,238 +87,6 @@ const OrdersPageContainer = () => {
             }));
         }
     }, [searchValue, setPaginationState]);
-
-    const tableData = [
-        {
-            id: 101,
-            product: "Apple",
-            productType: "iPhone 14",
-            amount: 5, // Quantity
-            platform: "Amazon", // Platform
-            country: "USA", // Country
-            entrepreneur: "John's Electronics", // Entrepreneur
-            status: "Gözlənilir", // Status
-            button: null, // Placeholder for edit/delete actions
-        },
-        {
-            id: 102,
-            product: "Apple",
-            productType: "iPhone 14",
-            amount: 5, // Quantity
-            platform: "Amazon", // Platform
-            country: "USA", // Country
-            entrepreneur: "John's Electronics", // Entrepreneur
-            status: "Göndərildi", // Status
-            button: null, // Placeholder for edit/delete actions
-        },
-        {
-            id: 103,
-            product: "Apple",
-            productType: "iPhone 14",
-            amount: 5, // Quantity
-            platform: "Amazon", // Platform
-            country: "USA", // Country
-            entrepreneur: "John's Electronics", // Entrepreneur
-            status: "Gözlənilir", // Status
-            button: null, // Placeholder for edit/delete actions
-        },
-        {
-            id: 104,
-            product: "Apple",
-            productType: "iPhone 14",
-            amount: 5, // Quantity
-            platform: "Amazon", // Platform
-            country: "USA", // Country
-            entrepreneur: "John's Electronics", // Entrepreneur
-            status: "Geri qaytarıldı", // Status
-            button: null, // Placeholder for edit/delete actions
-        },
-        {
-            id: 105,
-            product: "Apple",
-            productType: "iPhone 14",
-            amount: 5, // Quantity
-            platform: "Amazon", // Platform
-            country: "USA", // Country
-            entrepreneur: "John's Electronics", // Entrepreneur
-            status: "Gözlənilir", // Status
-            button: null, // Placeholder for edit/delete actions
-        },
-        {
-            id: 106,
-            product: "Apple",
-            productType: "iPhone 14",
-            amount: 5, // Quantity
-            platform: "Amazon", // Platform
-            country: "USA", // Country
-            entrepreneur: "John's Electronics", // Entrepreneur
-            status: "Göndərildi", // Status
-            button: null, // Placeholder for edit/delete actions
-        },
-        {
-            id: 107,
-            product: "Apple",
-            productType: "iPhone 14",
-            amount: 5, // Quantity
-            platform: "Amazon", // Platform
-            country: "USA", // Country
-            entrepreneur: "John's Electronics", // Entrepreneur
-            status: "Gözlənilir", // Status
-            button: null, // Placeholder for edit/delete actions
-        },
-        {
-            id: 108,
-            product: "Apple",
-            productType: "iPhone 14",
-            amount: 5, // Quantity
-            platform: "Amazon", // Platform
-            country: "USA", // Country
-            entrepreneur: "John's Electronics", // Entrepreneur
-            status: "Geri qaytarıldı", // Status
-            button: null, // Placeholder for edit/delete actions
-        },
-        {
-            id: 109,
-            product: "Apple",
-            productType: "iPhone 14",
-            amount: 5, // Quantity
-            platform: "Amazon", // Platform
-            country: "USA", // Country
-            entrepreneur: "John's Electronics", // Entrepreneur
-            status: "Göndərildi", // Status
-            button: null, // Placeholder for edit/delete actions
-        },
-        {
-            id: 110,
-            product: "Apple",
-            productType: "iPhone 14",
-            amount: 5, // Quantity
-            platform: "Amazon", // Platform
-            country: "USA", // Country
-            entrepreneur: "John's Electronics", // Entrepreneur
-            status: "Gözlənilir", // Status
-            button: null, // Placeholder for edit/delete actions
-        },
-        {
-            id: 111,
-            product: "Apple",
-            productType: "iPhone 14",
-            amount: 5, // Quantity
-            platform: "Amazon", // Platform
-            country: "USA", // Country
-            entrepreneur: "John's Electronics", // Entrepreneur
-            status: "Geri qaytarıldı", // Status
-            button: null, // Placeholder for edit/delete actions
-        },
-        {
-            id: 112,
-            product: "Apple",
-            productType: "iPhone 14",
-            amount: 5, // Quantity
-            platform: "Amazon", // Platform
-            country: "USA", // Country
-            entrepreneur: "John's Electronics", // Entrepreneur
-            status: "Göndərildi", // Status
-            button: null, // Placeholder for edit/delete actions
-        },
-        {
-            id: 113,
-            product: "Apple",
-            productType: "iPhone 14",
-            amount: 5, // Quantity
-            platform: "Amazon", // Platform
-            country: "USA", // Country
-            entrepreneur: "John's Electronics", // Entrepreneur
-            status: "Gözlənilir", // Status
-            button: null, // Placeholder for edit/delete actions
-        },
-        {
-            id: 114,
-            product: "Apple",
-            productType: "iPhone 14",
-            amount: 5, // Quantity
-            platform: "Amazon", // Platform
-            country: "USA", // Country
-            entrepreneur: "John's Electronics", // Entrepreneur
-            status: "Geri qaytarıldı", // Status
-            button: null, // Placeholder for edit/delete actions
-        },
-        {
-            id: 115,
-            product: "Apple",
-            productType: "iPhone 14",
-            amount: 5, // Quantity
-            platform: "Amazon", // Platform
-            country: "USA", // Country
-            entrepreneur: "John's Electronics", // Entrepreneur
-            status: "Göndərildi", // Status
-            button: null, // Placeholder for edit/delete actions
-        },
-        {
-            id: 116,
-            product: "Apple",
-            productType: "iPhone 14",
-            amount: 5, // Quantity
-            platform: "Amazon", // Platform
-            country: "USA", // Country
-            entrepreneur: "John's Electronics", // Entrepreneur
-            status: "Gözlənilir", // Status
-            button: null, // Placeholder for edit/delete actions
-        },
-        {
-            id: 117,
-            product: "Apple",
-            productType: "iPhone 14",
-            amount: 5, // Quantity
-            platform: "Amazon", // Platform
-            country: "USA", // Country
-            entrepreneur: "John's Electronics", // Entrepreneur
-            status: "Geri qaytarıldı", // Status
-            button: null, // Placeholder for edit/delete actions
-        },
-        {
-            id: 118,
-            product: "Apple",
-            productType: "iPhone 14",
-            amount: 5, // Quantity
-            platform: "Amazon", // Platform
-            country: "USA", // Country
-            entrepreneur: "John's Electronics", // Entrepreneur
-            status: "Göndərildi", // Status
-            button: null, // Placeholder for edit/delete actions
-        },
-        {
-            id: 119,
-            product: "Apple",
-            productType: "iPhone 14",
-            amount: 5, // Quantity
-            platform: "Amazon", // Platform
-            country: "USA", // Country
-            entrepreneur: "John's Electronics", // Entrepreneur
-            status: "Gözlənilir", // Status
-            button: null, // Placeholder for edit/delete actions
-        },
-        {
-            id: 120,
-            product: "Apple",
-            productType: "iPhone 14",
-            amount: 5, // Quantity
-            platform: "Amazon", // Platform
-            country: "USA", // Country
-            entrepreneur: "John's Electronics", // Entrepreneur
-            status: "Geri qaytarıldı", // Status
-            button: null, // Placeholder for edit/delete actions
-        },
-    ];
-
-    const infoData: any = {
-        platform: 'Ali express',
-        name: 'Ali express',
-        no: '855',
-        date: '28/10/2024',
-        phoneNumber: '+2020 8788 677 56',
-        email: 'aliexpressseller@gmail.com'
-    }
 
     const handleContent = (e: any) => (
         <div className={styles.three_dots} >
@@ -330,7 +109,6 @@ const OrdersPageContainer = () => {
         </div>
     );
 
-
     const allTableColumns: ColumnDef<any>[] = useMemo(
         () => [
             {
@@ -342,7 +120,6 @@ const OrdersPageContainer = () => {
                         <div>Sifariş NO</div>
                     </div>
                 ),
-                // header: "Sifariş NO",
                 cell: (info: any) => (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                         <input type='checkbox' />
@@ -351,14 +128,14 @@ const OrdersPageContainer = () => {
                 enableResizing: false,
             },
             {
-                accessorFn: (row: any) => row?.product,
+                accessorFn: (row: any) => row?.product_name,
                 id: "product",
                 header: "Sifariş olunan məhsul",
                 cell: (info: any) => info.getValue(),
                 enableResizing: false,
             },
             {
-                accessorFn: (row: any) => row?.productType,
+                accessorFn: (row: any) => row?.category?.name,
                 id: "productType",
                 header: "Sifarişin çeşidi",
                 cell: (info: any) => info.getValue(),
@@ -372,7 +149,7 @@ const OrdersPageContainer = () => {
                 enableResizing: false,
             },
             {
-                accessorFn: (row: any) => row?.platform,
+                accessorFn: (row: any) => row?.buyer_platform,
                 id: "platform",
                 header: "Platforma",
                 cell: (info: any) =>
@@ -386,7 +163,7 @@ const OrdersPageContainer = () => {
                                 );
                                 setModalPosition({ top: rect.bottom + 10, left: rect.left });
                             }}>{infoArrow}</div>
-                            {openRowId === info.row.original.id && <PlatformInfoModal position={modalPosition} setOpenRowId={setOpenRowId} infoData={infoData} />
+                            {openRowId === info.row.original.id && <PlatformInfoModal position={modalPosition} setOpenRowId={setOpenRowId} infoData={info?.row?.original} />
                             }
                         </div>
                     </div>,
@@ -400,7 +177,7 @@ const OrdersPageContainer = () => {
                 enableResizing: false,
             },
             {
-                accessorFn: (row: any) => row?.entrepreneur,
+                accessorFn: (row: any) => row?.seller_company,
                 id: "entrepreneur",
                 header: "Sifarişin verildiyi sahibkar",
                 cell: (info: any) => info.getValue(),
@@ -470,7 +247,7 @@ const OrdersPageContainer = () => {
             <div className={styles.table_container}>
                 <Table
                     columns={allTableColumns}
-                    tableData={tableData ?? []}
+                    tableData={data?.data ?? []}
                     paginationState={paginationState}
                     setPaginationState={setPaginationState}
                     setPaginationDetails={setPaginationDetails}
@@ -480,20 +257,20 @@ const OrdersPageContainer = () => {
                 />
                 <div className={styles.table_pagination}>
                     <div className={styles.pagination_details_txt}>
-                        Axtarış nəticəsi: {tableData?.length} məlumatın{" "}
+                        Axtarış nəticəsi: {data?.data?.length} məlumatın{" "}
                         {paginationRange.startOfRange} - {paginationRange.endOfRange}{" "}
                         aralığı
                     </div>
                     <div className={styles.pagination}>
                         <ReactPaginate
-                            pageCount={Math.ceil(tableData?.length / 10)}
+                            pageCount={Math.ceil(data?.data?.length / 10)}
                             breakLabel={
                                 <div className={`${styles.pagination_page_number}`}>...</div>
                             }
                             previousLabel={
                                 <button
                                     className={styles.pagination_button}
-                                // disabled={!paginationDetails?.canPreviousPage}
+                                    disabled={!paginationDetails?.canPreviousPage}
                                 >
                                     {tablePrevArrow}
                                 </button>
@@ -501,7 +278,7 @@ const OrdersPageContainer = () => {
                             nextLabel={
                                 <button
                                     className={styles.pagination_button}
-                                // disabled={!paginationDetails?.canNextPage}
+                                    disabled={!paginationDetails?.canNextPage}
                                 >
                                     {tableNextArrow}
                                 </button>
@@ -516,7 +293,7 @@ const OrdersPageContainer = () => {
                         />
                     </div>
                 </div>
-                {openDeleteModal && <DeleteModal openDeleteModal={openDeleteModal} setOpenDeleteModal={setOpenDeleteModal} />}
+                {openDeleteModal && <DeleteModal openDeleteModal={openDeleteModal} setOpenDeleteModal={setOpenDeleteModal} selectedRow={selectedRow} />}
                 {openAddNoteModal && <AddNoteModal openAddNoteModal={openAddNoteModal} setOpenAddNoteModal={setOpenAddNoteModal} />}
                 {openViewNotesModal && <ViewNotesModal openViewNotesModal={openViewNotesModal} setOpenViewNotesModal={setOpenViewNotesModal} />}
                 <CreateNewOrderModal action={modalAction} openCreateNewOrderModal={openCreateNewOrderModal} setOpenCreateNewOrderModal={setOpenCreateNewOrderModal} />
