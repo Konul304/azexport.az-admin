@@ -121,7 +121,7 @@ const infoArrow = (
 
 const cancel = (
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
-        <path d="M6.35435 6.58689L10.2069 10.4394M10.2069 6.58689L6.35435 10.4394M5.58385 14.2919H10.9774C12.0562 14.2919 12.5956 14.2919 13.0076 14.082C13.3701 13.8973 13.6648 13.6026 13.8494 13.2402C14.0594 12.8281 14.0594 12.2887 14.0594 11.2099V5.81639C14.0594 4.73758 14.0594 4.19818 13.8494 3.78613C13.6648 3.42368 13.3701 3.129 13.0076 2.94432C12.5956 2.73438 12.0562 2.73438 10.9774 2.73438H5.58385C4.50504 2.73438 3.96564 2.73438 3.55359 2.94432C3.19114 3.129 2.89646 3.42368 2.71178 3.78613C2.50183 4.19818 2.50183 4.73758 2.50183 5.81639V11.2099C2.50183 12.2887 2.50183 12.8281 2.71178 13.2402C2.89646 13.6026 3.19114 13.8973 3.55359 14.082C3.96564 14.2919 4.50504 14.2919 5.58385 14.2919Z" stroke="#67778C" strokeOpacity="0.7" strokeWidth="1.10072" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M11.3333 5.16602L4.66663 11.8327M4.66663 5.16602L11.3333 11.8327" stroke="#D2D5DA" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
 );
 
@@ -258,6 +258,100 @@ const whatsapp = (
     </svg>
 );
 
+const filters_calendar = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16" fill="none">
+        <path d="M14.5 6.66634H2.5M11.1667 1.33301V3.99967M5.83333 1.33301V3.99967M7.5 9.33301L8.5 8.66634V11.9997M7.66667 11.9997H9.33333M5.7 14.6663H11.3C12.4201 14.6663 12.9802 14.6663 13.408 14.4484C13.7843 14.2566 14.0903 13.9506 14.282 13.5743C14.5 13.1465 14.5 12.5864 14.5 11.4663V5.86634C14.5 4.74624 14.5 4.18618 14.282 3.75836C14.0903 3.38204 13.7843 3.07607 13.408 2.88433C12.9802 2.66634 12.4201 2.66634 11.3 2.66634H5.7C4.5799 2.66634 4.01984 2.66634 3.59202 2.88433C3.21569 3.07607 2.90973 3.38204 2.71799 3.75836C2.5 4.18618 2.5 4.74624 2.5 5.86634V11.4663C2.5 12.5864 2.5 13.1465 2.71799 13.5743C2.90973 13.9506 3.21569 14.2566 3.59202 14.4484C4.01984 14.6663 4.5799 14.6663 5.7 14.6663Z" stroke="#2B3644" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>);
+
+const successIcon = (
+    <svg
+        width="48"
+        height="49"
+        viewBox="0 0 48 49"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path
+            d="M24 44.5C35 44.5 44 35.5 44 24.5C44 13.5 35 4.5 24 4.5C13 4.5 4 13.5 4 24.5C4 35.5 13 44.5 24 44.5Z"
+            stroke="#208F53"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+        <path
+            d="M15.5 24.5L21.16 30.16L32.5 18.84"
+            stroke="#208F53"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+    </svg>
+);
+
+const errorIcon = (
+    <svg
+        width="48"
+        height="48"
+        viewBox="0 0 48 48"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path
+            d="M24 44C35 44 44 35 44 24C44 13 35 4 24 4C13 4 4 13 4 24C4 35 13 44 24 44Z"
+            stroke="#BF3A3A"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+        <path
+            d="M18.3398 29.66L29.6598 18.34"
+            stroke="#BF3A3A"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+        <path
+            d="M29.6598 29.66L18.3398 18.34"
+            stroke="#BF3A3A"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+    </svg>
+);
+
+const warningIcon = (
+    <svg
+        width="48"
+        height="48"
+        viewBox="0 0 48 48"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path
+            d="M24 44C35 44 44 35 44 24C44 13 35 4 24 4C13 4 4 13 4 24C4 35 13 44 24 44Z"
+            stroke="#F5BD2B"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+        <path
+            d="M24 16V26"
+            stroke="#F5BD2B"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+        <path
+            d="M23.9883 32H24.0062"
+            stroke="#F5BD2B"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+    </svg>
+);
+
 
 export {
     home_icon,
@@ -283,5 +377,9 @@ export {
     three_dots,
     download,
     datepicker_calendar,
-    whatsapp
+    whatsapp,
+    filters_calendar,
+    successIcon,
+    errorIcon,
+    warningIcon
 };

@@ -4,7 +4,7 @@ import OrdersPageContainer from '../(components)/OrdersPageContainer'
 const page = () => {
     return (
         <>
-        <OrdersPageContainer/>
+            <OrdersPageContainer />
         </>
     )
 }

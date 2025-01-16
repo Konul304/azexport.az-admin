@@ -32,12 +32,13 @@
             justify-content: flex-start;
             margin-bottom: 1.6rem;
 
-            span {
+            .icon {
                 margin-left: 42px;
                 margin-right: 10px;
             }
-            svg{
-                path{
+
+            svg {
+                path {
                     stroke: #67778C;
                 }
             }

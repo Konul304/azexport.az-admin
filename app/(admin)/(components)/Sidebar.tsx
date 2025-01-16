@@ -3,18 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-// import {
-//   admin_users,
-//   admin_users_Fill,
-//   collector,
-//   document,
-//   documentFill,
-//   logo,
-//   portfolio,
-//   templates,
-//   templatesFill,
-// } from "@/public/images/index";
-import logo from "../../public/images/logo.png"
+import logo from "../../../public/images/logo.png"
 import styles from "@/styles/componentStyles/Sidebar.module.scss";
 import Image from "next/image";
 import { home_icon, orders } from "@/public/icons";
@@ -40,7 +29,7 @@ const Sidebar = () => {
                             : `${styles.menu_item}`
                             }`}
                     >
-                        <span>{home_icon}</span>{" "}
+                        <div className={styles.icon}>{home_icon}</div>{" "}
                         İdarəetmə paneli
                     </div>
                 </Link>
@@ -51,7 +40,7 @@ const Sidebar = () => {
                             : `${styles.menu_item}`
                             }`}
                     >
-                        <span>{orders}</span>
+                        <div className={styles.icon}>{orders}</div>
                         Sifarişlər
                     </div>
                 </Link>

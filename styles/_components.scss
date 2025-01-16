@@ -28,6 +28,7 @@
 
 .ant-popover {
     font-family: Sf Pro Display;
+    border-radius: 10px !important;
 }
 
 .ant-form-item-label{
@@ -48,4 +49,20 @@
 
 .ant-form-item{
     margin-bottom: 0px !important;
+}
+
+.ant-popover-inner{
+    padding: 0px !important;
+    border-radius: 10px !important;
+}
+
+.ant-select-selector {
+    border: none !important;
+}
+
+.ant-modal-close-x{
+    svg{
+        width: 24px !important;
+        height: 24px !important;
+    }
 }

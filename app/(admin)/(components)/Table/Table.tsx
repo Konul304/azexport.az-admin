@@ -16,9 +16,9 @@ import {
     ColumnOrderState,
     SortingState,
 } from "@tanstack/react-table";
-import { setPaginationPageCount } from "../../(store)/(slices)/paginationSlice";
-import { setSearchValue } from "../../(store)/(slices)/searchSlice";
-import { Pagination, SearchState } from "../../(store)/storeInterface";
+import { setPaginationPageCount } from "../../../(store)/(slices)/paginationSlice";
+import { setSearchValue } from "../../../(store)/(slices)/searchSlice";
+import { Pagination, SearchState } from "../../../(store)/storeInterface";
 import CustomTable from "./CustomTable";
 // import { useSkipper } from "./hooks";
 // import DefaultColumn, { fuzzyFilter, getTableMeta } from "./tableModels";
