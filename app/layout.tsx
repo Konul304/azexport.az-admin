@@ -1,3 +1,4 @@
+import { ToastContainer } from "react-toastify";
 import "../styles/_globals.scss";
 import ProvidersWrapper from "./Providers";
 
@@ -17,6 +18,7 @@ export default async function RootLayout({
         <ProvidersWrapper>
           {children}
         </ProvidersWrapper>
+        <ToastContainer />
       </body>
     </html>
   );

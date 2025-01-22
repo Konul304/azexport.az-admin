@@ -1,18 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from "@/styles/componentStyles/CreateNewOrderModal.module.scss"
 import { DatePicker, Divider, Form, FormProps, Input, Modal, Select, Space } from 'antd';
 import { cancel, datepicker_calendar, email, whatsapp } from '@/public/icons';
-import { getCategories, getSubscribers, postOrder } from '@/app/(api)/api';
+import { getCategories, getSubscribers, patchOrder, postOrder } from '@/app/(api)/api';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
+import { toast } from 'react-toastify';
 
 export interface CreateNewOrderModalProps {
     setOpenCreateNewOrderModal: (open: boolean) => void;
     openCreateNewOrderModal: boolean;
     action: string;
+    selectedRow: any;
 }
 
-const CreateNewOrderModal = ({ openCreateNewOrderModal, setOpenCreateNewOrderModal, action }: CreateNewOrderModalProps) => {
+const CreateNewOrderModal = ({ openCreateNewOrderModal, setOpenCreateNewOrderModal, action, selectedRow }: CreateNewOrderModalProps) => {
     const client = useQueryClient();
     const [form] = Form.useForm();
 
@@ -35,25 +37,66 @@ const CreateNewOrderModal = ({ openCreateNewOrderModal, setOpenCreateNewOrderMod
     const createOrderMutation = useMutation(postOrder, {
         onSuccess: () => {
             client.invalidateQueries(["ordersData"]);
-            setOpenCreateNewOrderModal(false);
-            form.resetFields();
+            toast('Yeni sifariş uğurla yaradıldı');
+            setOpenCreateNewOrderModal(false)
         },
         onError: (error) => {
             console.error("Error creating order:", error);
+            toast('Xəta baş verdi');
+            setOpenCreateNewOrderModal(false)
+        },
+    });
+
+    const updateOrderMutation = useMutation(patchOrder, {
+        onSuccess: () => {
+            client.invalidateQueries(["ordersData"]);
+            toast('Sifariş uğurla yeniləndi');
+            setOpenCreateNewOrderModal(false)
+        },
+        onError: (error) => {
+            console.error("Error updateing order:", error);
+            toast('Xəta baş verdi');
+            setOpenCreateNewOrderModal(false)
         },
     });
 
     const handleFormSubmit = (values: any) => {
         const formattedDate = dayjs(values.date).format('YYYY-MM-DD HH:mm:ss');
-        const newData = {
-            ...values,
-            date: formattedDate,
-            status: 0,
-        };
-
-        createOrderMutation.mutate(newData);
+        if (action === 'create') {
+            const newData = {
+                ...values,
+                date: formattedDate,
+                status: 0,
+            };
+            createOrderMutation.mutate(newData);
+        } else {
+            const newData = {
+                ...values,
+                date: formattedDate,
+                status: selectedRow?.status,
+                id: selectedRow?.id
+            }
+            updateOrderMutation.mutate(newData)
+        }
     };
 
+    console.log(selectedRow)
+
+    const handleClose = () => {
+        // form.resetFields();
+        setOpenCreateNewOrderModal(false);
+    }
+
+    useEffect(() => {
+        if (action === "edit" && selectedRow) {
+            form.setFieldsValue({
+                ...selectedRow,
+                date: selectedRow?.date ? dayjs(selectedRow.date, "YYYY-MM-DD HH:mm:ss") : null,
+            });
+        } else {
+            form.resetFields();
+        }
+    }, [action, selectedRow, form]);
 
     return (
         <Modal
@@ -63,7 +106,7 @@ const CreateNewOrderModal = ({ openCreateNewOrderModal, setOpenCreateNewOrderMod
             footer={false}
             centered
             closeIcon={cancel}
-            onCancel={() => setOpenCreateNewOrderModal(false)}>
+            onCancel={handleClose}>
             <div className={styles.create_order_container}>
                 <div className={styles.title}>
                     {action === "create" ? "Yeni sifariş yarat" : "Sifarişə düzəliş et"}
@@ -72,13 +115,13 @@ const CreateNewOrderModal = ({ openCreateNewOrderModal, setOpenCreateNewOrderMod
                     {action === "new" ? "Yeni sifariş yaratmaq üçün məlumatları doldurun" : "Məlumatları redaktə edin"}
                 </div>
                 <Form
+                    form={form}
                     layout='vertical'
                     labelCol={{ span: 8 }}
                     wrapperCol={{ span: 16 }}
-                    // initialValues={{ remember: true }}
+                    // initialValues={action === 'edit' ? selectedRow : {}}
                     onFinish={handleFormSubmit}
                     autoComplete="off"
-                    form={form}
                 >
                     <div className={styles.form_container}>
                         <Form.Item<any>
@@ -192,6 +235,7 @@ const CreateNewOrderModal = ({ openCreateNewOrderModal, setOpenCreateNewOrderMod
                                 placeholder='Tarix seçin'
                                 className={styles.input}
                                 suffixIcon={datepicker_calendar}
+                                format="YYYY-MM-DD"
                             />
                         </Form.Item>
                         <Form.Item<any>
@@ -229,7 +273,7 @@ const CreateNewOrderModal = ({ openCreateNewOrderModal, setOpenCreateNewOrderMod
                         </Form.Item>
                     </div>
                     <div className={styles.form_buttons}>
-                        <button type='button' className={styles.cancel_btn} onClick={() => setOpenCreateNewOrderModal(false)}>Ləğv et</button>
+                        <button type='button' className={styles.cancel_btn} onClick={handleClose}>Ləğv et</button>
                         <button className={styles.save_btn} type='submit'>Yadda saxla</button>
                     </div>
                 </Form>

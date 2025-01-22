@@ -1,10 +1,10 @@
 import { Modal } from 'antd'
-import React, { useState } from 'react'
+import React from 'react'
 import styles from "@/styles/componentStyles/DeleteModal.module.scss"
 import { cancel } from '@/public/icons';
 import { deleteOrder } from '@/app/(api)/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import StatusModal from './StatusModal';
+import { toast } from 'react-toastify';
 
 export interface DeleteModalProps {
     setOpenDeleteModal: (open: boolean) => void;
@@ -14,19 +14,16 @@ export interface DeleteModalProps {
 
 const DeleteModal = ({ openDeleteModal, setOpenDeleteModal, selectedRow }: DeleteModalProps) => {
     const client = useQueryClient();
-    const [openStatusModal, setOpenStatusModal] = useState<boolean>(false);
-    const [statusAction, setStatusAction] = useState<string>("");
 
     const deleteSelected = async () => {
         try {
             await deleteOrder(selectedRow?.id);
-            setStatusAction("order-delete-success");
-            setOpenStatusModal(true);
+            toast('Sifariş uğurla silindi');
+            setOpenDeleteModal(false)
         } catch (error: any) {
             console.log(error);
-            setStatusAction("error");
-            setOpenStatusModal(true);
-            // setOpenDeleteModal(false)
+            toast('Xəta baş verdi');
+            setOpenDeleteModal(false)
         }
     }
 
@@ -39,9 +36,7 @@ const DeleteModal = ({ openDeleteModal, setOpenDeleteModal, selectedRow }: Delet
 
     const handleDelete = () => {
         deleteMutation.mutate();
-        // setOpenDeleteModal(false)
     };
-    console.log(statusAction)
     return (
         <>
             <Modal
@@ -61,11 +56,6 @@ const DeleteModal = ({ openDeleteModal, setOpenDeleteModal, selectedRow }: Delet
                         <button className={styles.delete_btn} onClick={handleDelete}>Sil</button>
                     </div>
                 </div>
-                {openStatusModal && <StatusModal
-                    open={openStatusModal}
-                    setOpen={setOpenStatusModal}
-                    statusAction={statusAction}
-                />}
             </Modal >
         </>
     )
