@@ -60,6 +60,10 @@ export function CustomTable<T extends RowData>({
     const [headerGroups, footerGroup] = getTableHeaderGroups(table, tableGroup);
     const tableContainerRef = React.useRef<HTMLDivElement>(null);
 
+
+
+
+
     useEffect(() => {
         if (scrollable) fetchMoreOnBottomReached(tableContainerRef.current);
     }, [fetchMoreOnBottomReached, scrollable]);
@@ -70,7 +74,6 @@ export function CustomTable<T extends RowData>({
             onScroll={(e) => {
                 if (scrollable) fetchMoreOnBottomReached(e.target as HTMLDivElement);
             }}
-            ref={tableContainerRef}
         >
             <table className={styles.table}>
                 <thead>

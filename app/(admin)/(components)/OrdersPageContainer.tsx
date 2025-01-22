@@ -15,12 +15,12 @@ import ViewNotesModal from './Common/ViewNotesModal';
 import CreateNewOrderModal from './CreateNewOrderModal';
 import { getOrders } from '../../(api)/api';
 import { useQuery } from '@tanstack/react-query';
-import StatusModal from './Common/StatusModal';
+import dayjs from 'dayjs';
 
 
 const OrdersPageContainer = () => {
     const [openRowId, setOpenRowId] = useState<number | null>(null);
-    const [selectedRow, setSelectedRow] = useState<number | null>(null);
+    const [selectedRow, setSelectedRow] = useState<any | null>(null);
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [openAddNoteModal, setOpenAddNoteModal] = useState(false);
     const [openViewNotesModal, setOpenViewNotesModal] = useState(false);
@@ -231,7 +231,7 @@ const OrdersPageContainer = () => {
                 enableResizing: false,
             },
         ],
-        [openRowId]
+        [openRowId, selectedRow]
     );
 
     return (
@@ -293,10 +293,24 @@ const OrdersPageContainer = () => {
                         />
                     </div>
                 </div>
-                {openDeleteModal && <DeleteModal openDeleteModal={openDeleteModal} setOpenDeleteModal={setOpenDeleteModal} selectedRow={selectedRow} />}
-                {openAddNoteModal && <AddNoteModal openAddNoteModal={openAddNoteModal} setOpenAddNoteModal={setOpenAddNoteModal} />}
-                {openViewNotesModal && <ViewNotesModal openViewNotesModal={openViewNotesModal} setOpenViewNotesModal={setOpenViewNotesModal} />}
-                <CreateNewOrderModal action={modalAction} openCreateNewOrderModal={openCreateNewOrderModal} setOpenCreateNewOrderModal={setOpenCreateNewOrderModal} />
+                {openDeleteModal && <DeleteModal
+                    openDeleteModal={openDeleteModal}
+                    setOpenDeleteModal={setOpenDeleteModal}
+                    selectedRow={selectedRow} />}
+                {openAddNoteModal && <AddNoteModal
+                    openAddNoteModal={openAddNoteModal}
+                    setOpenAddNoteModal={setOpenAddNoteModal} />}
+                {openViewNotesModal && <ViewNotesModal
+                    openViewNotesModal={openViewNotesModal}
+                    setOpenViewNotesModal={setOpenViewNotesModal} />}
+                <CreateNewOrderModal
+                    action={modalAction}
+                    openCreateNewOrderModal={openCreateNewOrderModal}
+                    setOpenCreateNewOrderModal={setOpenCreateNewOrderModal}
+                    selectedRow={modalAction === 'edit' ? {
+                        ...selectedRow,
+                        date: selectedRow?.date ? dayjs(selectedRow.date, "YYYY-MM-DD HH:mm:ss") : null,
+                    } : ''} />
             </div>
         </>
     )

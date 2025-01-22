@@ -66,7 +66,6 @@ export const deleteOrder = async (id: any) => {
     }
 };
 
-
 export const getCategories = async () => {
     try {
         const response = await axiosCrmClient.get("categories");
@@ -82,5 +81,14 @@ export const getSubscribers = async () => {
         return response?.data;
     } catch (err: any) {
         console.log(err);
+    }
+};
+
+export const patchOrder = async (data: any) => {
+    try {
+        const response = await axiosCrmClient.patch(`orders/${data?.id}`, data);
+        return response?.data;
+    } catch (err: any) {
+        throw new Error(err);
     }
 };

@@ -21,8 +21,8 @@ export default async function AdminLayout({
     await protectLayout();
     return (
         <>
-            <html lang="en">
-                <body>
+            <div>
+                <div>
                     <div className="main_container">
                         <Sidebar />
                         <div className="navbar_and_body">
@@ -30,8 +30,8 @@ export default async function AdminLayout({
                             <div className="body_container">{children}</div>
                         </div>
                     </div>
-                </body>
-            </html >
+                </div>
+            </div >
         </>
     );
 }
