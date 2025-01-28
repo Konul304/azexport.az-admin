@@ -127,8 +127,9 @@ export const getFilteredOrders = async (data: any) => {
         }
 
         const response = await axiosCrmClient.get(`orders-filter?${params.toString()}`);
-        return response?.data;
+        return response;
     } catch (err: any) {
         console.error(err);
+        return err;
     }
 };
