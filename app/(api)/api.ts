@@ -46,7 +46,6 @@ export const getOrderById = async (id: number) => {
     }
 };
 
-
 export const postOrder = async (data: any) => {
     try {
         const response = await axiosCrmClient.post("orders", data);
@@ -90,5 +89,47 @@ export const patchOrder = async (data: any) => {
         return response?.data;
     } catch (err: any) {
         throw new Error(err);
+    }
+};
+
+export const putOrder = async (id: number, data: any) => {
+    try {
+        const response = await axiosCrmClient.put(`orders/${id}/status`, data);
+        return response?.data;
+    } catch (err: any) {
+        throw new Error(err);
+    }
+};
+
+export const patchNote = async (id: number, data: any) => {
+    try {
+        const response = await axiosCrmClient.patch(`orders/${id}/note`, data);
+        return response?.data;
+    } catch (err: any) {
+        throw new Error(err);
+    }
+};
+
+
+export const getFilteredOrders = async (data: any) => {
+    try {
+        const params = new URLSearchParams();
+        for (const key in data) {
+            if (Array.isArray(data[key])) {
+                // Append array values as key[]=value format
+                data[key].forEach((value: string | number) => {
+                    params.append(`${key}[]`, String(value));
+                });
+            } else {
+                // Append non-array values directly
+                params.append(key, String(data[key]));
+            }
+        }
+
+        const response = await axiosCrmClient.get(`orders-filter?${params.toString()}`);
+        return response;
+    } catch (err: any) {
+        console.error(err);
+        return err;
     }
 };

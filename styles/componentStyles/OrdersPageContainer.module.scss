@@ -102,11 +102,31 @@
 .waiting {
     color: #F1C40F;
     background: rgba(241, 196, 15, 0.10);
+
+    svg {
+        margin-left: 10px;
+        margin-top: 5px;
+        cursor: pointer;
+
+        path {
+            stroke: #F1C40F;
+        }
+    }
 }
 
 .sent {
     color: #07BC0C;
     background: rgba(7, 188, 12, 0.08);
+
+    svg {
+        margin-left: 10px;
+        margin-top: 5px;
+        cursor: pointer;
+
+        path {
+            stroke: #07BC0C;
+        }
+    }
 }
 
 .exported {
@@ -209,11 +229,10 @@
 }
 
 .filters_container {
-    width: 388px;
     border-radius: 10px;
     font-family: SF Pro Display;
-    height: 448px;
     overflow: scroll;
+    margin-top: 7px;
 
     .header {
         padding: 8px 13px;
@@ -235,8 +254,7 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 11px;
-            margin-top: 22px;
-            width: 356px;
+            margin-top: 11px;
 
             .filter_name {
                 color: rgba(103, 119, 140, 0.80);
@@ -245,7 +263,7 @@
             }
 
             .clear_filter {
-                color: #2400FF;
+                color: #2B3644;
                 font-size: 13px;
                 font-weight: 500;
                 cursor: pointer;
@@ -253,19 +271,19 @@
         }
 
         .filter_input {
-            width: 361px;
+            width: 267px;
             height: 42px;
             border-radius: 6px;
             border: 1px solid rgba(103, 119, 140, 0.40);
             background: #FFF;
-            // margin-bottom: 22px;
+            margin-bottom: 16px;
 
         }
 
         .buttons_container {
             @include flex-center;
             justify-content: space-between;
-            margin-top: 27px;
+            margin-bottom: 8px;
 
             .clear_btn {
                 color: #67778C;
@@ -312,4 +330,14 @@
         color: #67778C;
         cursor: pointer;
     }
+}
+
+.noData {
+    width: 100%;
+    text-align: center;
+    color: #2B3644;
+    font-family: SF Pro Display;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 145%;
 }

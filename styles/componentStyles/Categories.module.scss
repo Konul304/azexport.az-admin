@@ -1,0 +1,54 @@
+@import "../mixin";
+
+.table_buttons {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+
+    .td_edit_button,
+    .td_remove_button {
+        cursor: pointer;
+    }
+}
+
+.table_pagination {
+    @include table_pagination;
+}
+
+.table_container {
+    table td {
+        text-align: left !important;
+    }
+}
+
+.categories_header {
+    @include flex-center;
+    justify-content: space-between;
+    font-family: SF Pro Display;
+    margin-bottom: 29px;
+
+    .title {
+        color: #2B3644;
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 145%;
+    }
+
+    .add_category_btn {
+        @include flex-center;
+        width: 160px;
+        height: 36px;
+        border-radius: 10px;
+        background: #2400FF;
+        color: #FFF;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+
+        &:hover {
+            background-color: #2103df;
+        }
+    }
+}

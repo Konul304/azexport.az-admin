@@ -10,7 +10,7 @@ import { QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-qu
 const queryClient = new QueryClient({
     queryCache: new QueryCache({
         onError: (error: any) => {
-            alert(`Xəta baş verdi`);
+            // alert(`Xəta baş verdi`);
             console.log(error?.message);
         },
     }),

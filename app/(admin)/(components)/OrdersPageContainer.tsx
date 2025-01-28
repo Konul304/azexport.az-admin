@@ -2,28 +2,30 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import styles from "@/styles/componentStyles/OrdersPageContainer.module.scss";
 import Table from './Table/Table';
-import { delete_icon, download, edit, infoArrow, tableNextArrow, tablePrevArrow, three_dots } from '@/public/icons';
+import { delete_icon, download, edit, infoArrow, note, tableNextArrow, tablePrevArrow, toggleStatusArrow } from '@/public/icons';
 import PlatformInfoModal from './PlatformInfoModal';
 import DeleteModal from './Common/DeleteModal';
 import AddNoteModal from './Common/AddNoteModal';
 import { ColumnDef, PaginationState } from '@tanstack/react-table';
 import { useSelector } from 'react-redux';
-import { Pagination, SearchState } from '../../(store)/storeInterface';
+import { FilterFields, Pagination, SearchState } from '../../(store)/storeInterface';
 import ReactPaginate from 'react-paginate';
-import { Popover } from 'antd';
-import ViewNotesModal from './Common/ViewNotesModal';
 import CreateNewOrderModal from './CreateNewOrderModal';
-import { getOrders } from '../../(api)/api';
-import { useQuery } from '@tanstack/react-query';
+import { getFilteredOrders, getOrders, putOrder } from '../../(api)/api';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
+import store from '@/app/(store)/store';
+import { setOrders } from '@/app/(store)/(slices)/ordersSlice';
 
 
 const OrdersPageContainer = () => {
+    const client = useQueryClient();
+    const [selectedIds, setSelectedIds] = useState<number[]>([]);
+    const [noMatchingData, setNoMatchingData] = useState<boolean>(false);
     const [openRowId, setOpenRowId] = useState<number | null>(null);
     const [selectedRow, setSelectedRow] = useState<any | null>(null);
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [openAddNoteModal, setOpenAddNoteModal] = useState(false);
-    const [openViewNotesModal, setOpenViewNotesModal] = useState(false);
     const [openCreateNewOrderModal, setOpenCreateNewOrderModal] = useState(false);
     const [modalAction, setModalAction] = useState<string>('');
     const [modalPosition, setModalPosition] = useState<any>();
@@ -39,6 +41,9 @@ const OrdersPageContainer = () => {
         startOfRange: 1,
         endOfRange: 10,
     });
+    const filters = useSelector(
+        (store: { filterFields: FilterFields }) => store.filterFields
+    );
 
     const getStatusStyles = (text: string) => {
         switch (text) {
@@ -59,6 +64,58 @@ const OrdersPageContainer = () => {
         (store: { search: SearchState }) => store.search.searchValue
     );
 
+    const { data } = useQuery(
+        ["ordersData"],
+        async () => await getOrders(),
+        {
+            refetchOnWindowFocus: false,
+            notifyOnChangeProps: 'all',
+        },
+    );
+
+    const isFiltersChanged = (filters: any) => {
+        const defaultFilters: any = { category: "", country: "", platform: "", date: null, product: "", status: "" };
+        const defaultFilters2: any = { category: [], country: [], platform: [], date: "", product: [], status: "" };
+        return Object.keys(filters).some(key => filters[key] !== (defaultFilters[key] && defaultFilters2[key]));
+    };
+
+    const { data: filteredData, refetch } = useQuery(
+        ["filtered-orders", filters],
+        async () => await getFilteredOrders(filters),
+        {
+            enabled: isFiltersChanged(filters), // Only fetch if filters have changed from default
+            refetchOnMount: false,
+            refetchOnWindowFocus: false,
+            notifyOnChangeProps: 'all',
+        }
+    );
+
+    const toggleSelectAll = (isChecked: boolean) => {
+        if (isChecked) {
+            const allIds = data?.data?.map((row: any) => row.id) ?? [];
+            setSelectedIds(allIds);
+        } else {
+            setSelectedIds([]);
+        }
+    };
+
+    const toggleRowSelection = (id: number) => {
+        setSelectedIds((prev) =>
+            prev.includes(id) ? prev.filter((rowId) => rowId !== id) : [...prev, id]
+        );
+    };
+
+    const toggleStatus = async (row: any) => {
+        const data = {
+            status: row?.status === 0 ? 1 : 0
+        }
+        try {
+            const res = await putOrder(row?.id, data)
+            client.invalidateQueries(["ordersData"]);
+        } catch (error: any) {
+            console.log(error)
+        }
+    }
 
     const handlePageClick = ({ selected }: any) => {
         const startOfRange = selected * 10 + 1;
@@ -69,16 +126,6 @@ const OrdersPageContainer = () => {
         });
     };
 
-
-    const { data, isLoading, isFetching, refetch } = useQuery(
-        ["ordersData"],
-        async () => await getOrders(),
-        {
-            refetchOnWindowFocus: false,
-        },
-    );
-
-
     useEffect(() => {
         if (setPaginationState) {
             setPaginationState((prevState: PaginationState) => ({
@@ -88,26 +135,17 @@ const OrdersPageContainer = () => {
         }
     }, [searchValue, setPaginationState]);
 
-    const handleContent = (e: any) => (
-        <div className={styles.three_dots} >
-            <p className={styles.item} style={{ marginBottom: '8px', marginTop: '0px' }}
-                onClick={() => {
-                    setOpenViewNotesModal(true);
-                    setSelectedRow(e);
-                }}
-            >
-                Qeydlərə bax
-            </p>
-            <p className={styles.item} style={{ marginBottom: '0px', marginTop: '0px' }}
-                onClick={() => {
-                    setOpenAddNoteModal(true)
-                    setSelectedRow(e);
-                }}
-            >
-                Qeyd Yarat
-            </p>
-        </div>
-    );
+    useEffect(() => {
+        if (data?.data && Array.isArray(data.data)) {
+            store.dispatch(setOrders(data.data));
+        }
+    }, [data?.data]);
+
+    useEffect(() => {
+        if (filteredData?.response?.data?.errors?.filters?.includes('No orders found')) {
+            setNoMatchingData(true)
+        }
+    }, [filters])
 
     const allTableColumns: ColumnDef<any>[] = useMemo(
         () => [
@@ -116,13 +154,20 @@ const OrdersPageContainer = () => {
                 id: "id",
                 header: (cell: any) => (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <input type='checkbox' />
+                        <input type='checkbox'
+                            checked={
+                                data?.data?.length > 0 &&
+                                selectedIds.length === data?.data?.length
+                            }
+                            onChange={(e) => toggleSelectAll(e.target.checked)} />
                         <div>Sifariş NO</div>
                     </div>
                 ),
                 cell: (info: any) => (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <input type='checkbox' />
+                        <input type='checkbox'
+                            checked={selectedIds.includes(info.getValue())}
+                            onChange={() => toggleRowSelection(info.getValue())} />
                         {info.getValue()}
                     </div>),
                 enableResizing: false,
@@ -176,18 +221,27 @@ const OrdersPageContainer = () => {
                 cell: (info: any) => info.getValue(),
                 enableResizing: false,
             },
-            {
-                accessorFn: (row: any) => row?.seller_company,
-                id: "entrepreneur",
-                header: "Sifarişin verildiyi sahibkar",
-                cell: (info: any) => info.getValue(),
-                enableResizing: false,
-            },
+            // {
+            //     accessorFn: (row: any) => row?.seller_company,
+            //     id: "entrepreneur",
+            //     header: "Sifarişin verildiyi sahibkar",
+            //     cell: (info: any) => info.getValue(),
+            //     enableResizing: false,
+            // },
             {
                 accessorFn: (row: any) => row?.status,
                 id: "status",
                 header: "Sifarişin statusu",
-                cell: (info: any) => <div className={getStatusStyles(info.getValue())}>{info.getValue()}</div>,
+                cell: (info: any) =>
+                    <div className={getStatusStyles(info.getValue())}>
+                        {info.getValue() === 0 ?
+                            <div className={styles.waiting}>Gözlənilir
+                                <div onClick={() => toggleStatus(info?.row?.original)}>{toggleStatusArrow}</div>
+                            </div> :
+                            <div className={styles.sent}>Göndərildi
+                                <div onClick={() => toggleStatus(info?.row?.original)}>{toggleStatusArrow}</div>
+                            </div>}
+                    </div>,
                 enableResizing: false,
             },
             {
@@ -207,14 +261,12 @@ const OrdersPageContainer = () => {
                             {edit}
                         </div>
                         <div>
-                            <Popover
-                                placement="bottomRight"
-                                content={handleContent(info.row.original)}
-                                arrow={false}
-                                trigger="click"
-                            >
-                                <div style={{ cursor: 'pointer' }} className={styles.three_dots}>{three_dots}</div>
-                            </Popover>
+                            <div
+                                style={{ cursor: 'pointer' }}
+                                onClick={() => { setSelectedRow(info.row.original); setOpenAddNoteModal(true) }}
+                                className={styles.three_dots}>
+                                {note}
+                            </div>
                         </div>
                         <div
                             className={styles.td_remove_button}
@@ -231,8 +283,11 @@ const OrdersPageContainer = () => {
                 enableResizing: false,
             },
         ],
-        [openRowId, selectedRow]
+        [openRowId, selectedRow, data, selectedIds]
     );
+
+    console.log(filteredData)
+    console.log(data?.data)
 
     return (
         <>
@@ -244,74 +299,74 @@ const OrdersPageContainer = () => {
                     <div className={styles.add_new_order_btn} onClick={() => { setOpenCreateNewOrderModal(true); setModalAction('create') }}>Yeni sifariş yarat</div>
                 </div>
             </div>
-            <div className={styles.table_container}>
-                <Table
-                    columns={allTableColumns}
-                    tableData={data?.data ?? []}
-                    paginationState={paginationState}
-                    setPaginationState={setPaginationState}
-                    setPaginationDetails={setPaginationDetails}
-                // sorting={sorting}
-                // setSorting={setSorting}
-                // loading={isLoading}
-                />
-                <div className={styles.table_pagination}>
-                    <div className={styles.pagination_details_txt}>
-                        Axtarış nəticəsi: {data?.data?.length} məlumatın{" "}
-                        {paginationRange.startOfRange} - {paginationRange.endOfRange}{" "}
-                        aralığı
+            {noMatchingData ? <div className={styles.noData}>Məlumat tapılmadı</div> :
+                <div className={styles.table_container}>
+                    <Table
+                        columns={allTableColumns}
+                        tableData={filteredData?.data?.data ?? data?.data ?? []}
+                        paginationState={paginationState}
+                        setPaginationState={setPaginationState}
+                        setPaginationDetails={setPaginationDetails}
+                    // sorting={sorting}
+                    // setSorting={setSorting}
+                    // loading={isLoading}
+                    />
+                    <div className={styles.table_pagination}>
+                        <div className={styles.pagination_details_txt}>
+                            Axtarış nəticəsi: {data?.data?.length} məlumatın{" "}
+                            {paginationRange.startOfRange} - {paginationRange.endOfRange}{" "}
+                            aralığı
+                        </div>
+                        <div className={styles.pagination}>
+                            <ReactPaginate
+                                pageCount={Math.ceil(data?.data?.length / 10)}
+                                breakLabel={
+                                    <div className={`${styles.pagination_page_number}`}>...</div>
+                                }
+                                previousLabel={
+                                    <button
+                                        className={styles.pagination_button}
+                                        disabled={!paginationDetails?.canPreviousPage}
+                                    >
+                                        {tablePrevArrow}
+                                    </button>
+                                }
+                                nextLabel={
+                                    <button
+                                        className={styles.pagination_button}
+                                        disabled={!paginationDetails?.canNextPage}
+                                    >
+                                        {tableNextArrow}
+                                    </button>
+                                }
+                                onPageChange={handlePageClick}
+                                pageRangeDisplayed={10}
+                                marginPagesDisplayed={1}
+                                containerClassName={styles.table_pagination}
+                                activeClassName={styles.pagination_active_page_number}
+                                pageLinkClassName={styles.pagination_page_number}
+                                forcePage={forcePaginationNum === true ? 0 : undefined}
+                            />
+                        </div>
                     </div>
-                    <div className={styles.pagination}>
-                        <ReactPaginate
-                            pageCount={Math.ceil(data?.data?.length / 10)}
-                            breakLabel={
-                                <div className={`${styles.pagination_page_number}`}>...</div>
-                            }
-                            previousLabel={
-                                <button
-                                    className={styles.pagination_button}
-                                    disabled={!paginationDetails?.canPreviousPage}
-                                >
-                                    {tablePrevArrow}
-                                </button>
-                            }
-                            nextLabel={
-                                <button
-                                    className={styles.pagination_button}
-                                    disabled={!paginationDetails?.canNextPage}
-                                >
-                                    {tableNextArrow}
-                                </button>
-                            }
-                            onPageChange={handlePageClick}
-                            pageRangeDisplayed={10}
-                            marginPagesDisplayed={1}
-                            containerClassName={styles.table_pagination}
-                            activeClassName={styles.pagination_active_page_number}
-                            pageLinkClassName={styles.pagination_page_number}
-                            forcePage={forcePaginationNum === true ? 0 : undefined}
-                        />
-                    </div>
-                </div>
-                {openDeleteModal && <DeleteModal
-                    openDeleteModal={openDeleteModal}
-                    setOpenDeleteModal={setOpenDeleteModal}
-                    selectedRow={selectedRow} />}
-                {openAddNoteModal && <AddNoteModal
-                    openAddNoteModal={openAddNoteModal}
-                    setOpenAddNoteModal={setOpenAddNoteModal} />}
-                {openViewNotesModal && <ViewNotesModal
-                    openViewNotesModal={openViewNotesModal}
-                    setOpenViewNotesModal={setOpenViewNotesModal} />}
-                <CreateNewOrderModal
-                    action={modalAction}
-                    openCreateNewOrderModal={openCreateNewOrderModal}
-                    setOpenCreateNewOrderModal={setOpenCreateNewOrderModal}
-                    selectedRow={modalAction === 'edit' ? {
-                        ...selectedRow,
-                        date: selectedRow?.date ? dayjs(selectedRow.date, "YYYY-MM-DD HH:mm:ss") : null,
-                    } : ''} />
-            </div>
+                    {openDeleteModal && <DeleteModal
+                        openDeleteModal={openDeleteModal}
+                        setOpenDeleteModal={setOpenDeleteModal}
+                        selectedRow={selectedRow} />}
+                    {openAddNoteModal && <AddNoteModal
+                        selectedRow={selectedRow}
+                        openAddNoteModal={openAddNoteModal}
+                        setOpenAddNoteModal={setOpenAddNoteModal} />}
+                    <CreateNewOrderModal
+                        action={modalAction}
+                        openCreateNewOrderModal={openCreateNewOrderModal}
+                        setOpenCreateNewOrderModal={setOpenCreateNewOrderModal}
+                        selectedRow={modalAction === 'edit' ? {
+                            ...selectedRow,
+                            date: selectedRow?.date ? dayjs(selectedRow.date, "YYYY-MM-DD HH:mm:ss") : null,
+                        } : ''} />
+                </div>}
+
         </>
     )
 }

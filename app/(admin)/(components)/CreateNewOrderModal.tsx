@@ -80,7 +80,6 @@ const CreateNewOrderModal = ({ openCreateNewOrderModal, setOpenCreateNewOrderMod
         }
     };
 
-    console.log(selectedRow)
 
     const handleClose = () => {
         // form.resetFields();
@@ -141,7 +140,8 @@ const CreateNewOrderModal = ({ openCreateNewOrderModal, setOpenCreateNewOrderMod
                         <Form.Item
                             label="Sifarişin verildiyi sahibkar"
                             name="subscriber_id"
-                            rules={[{ required: true, message: 'Zəhmət olmasa sahibkar seçin' }]}>
+                            // rules={[{ required: true, message: 'Zəhmət olmasa sahibkar seçin' }]}
+                            >
                             <Select
                                 className={styles.input}
                                 placeholder="Seçin"

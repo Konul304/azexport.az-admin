@@ -31,7 +31,7 @@
     border-radius: 10px !important;
 }
 
-.ant-form-item-label{
+.ant-form-item-label {
     white-space: nowrap !important;
 }
 
@@ -39,19 +39,19 @@
     max-width: 200px !important;
 }
 
-.ant-col-16{
+.ant-col-16 {
     max-width: 344px !important;
 }
 
-.ant-select-selection-wrap{
+.ant-select-selection-wrap {
     align-self: center !important;
 }
 
-.ant-form-item{
+.ant-form-item {
     margin-bottom: 0px !important;
 }
 
-.ant-popover-inner{
+.ant-popover-inner {
     padding: 0px !important;
     border-radius: 10px !important;
 }
@@ -60,9 +60,14 @@
     border: none !important;
 }
 
-.ant-modal-close-x{
-    svg{
+.ant-modal-close-x {
+    svg {
         width: 24px !important;
         height: 24px !important;
     }
+}
+
+.ant-select-multiple .ant-select-selection-overflow {
+    height: 35px !important;
+    overflow: scroll;
 }

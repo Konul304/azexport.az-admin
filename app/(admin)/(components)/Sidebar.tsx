@@ -33,15 +33,15 @@ const Sidebar = () => {
                         İdarəetmə paneli
                     </div>
                 </Link>
-                <Link href="/orders">
+                <Link href="/categories">
                     <div
-                        className={` ${selectedMenuItemId === "/orders"
+                        className={` ${selectedMenuItemId === "/categories"
                             ? `${styles.menu_item} ${styles.selected_menu_item}`
                             : `${styles.menu_item}`
                             }`}
                     >
                         <div className={styles.icon}>{orders}</div>
-                        Sifarişlər
+                        Kateqoriya
                     </div>
                 </Link>
             </div>

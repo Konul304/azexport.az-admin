@@ -24,25 +24,6 @@ const Navbar = ({ logoProp, roleProp }: any) => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const isAdmin = roleProp === "Admin" ? true : false;
 
-  const name =
-    typeof window !== "undefined" ? window.localStorage.getItem("name") : false;
-  const surname =
-    typeof window !== "undefined"
-      ? window.localStorage.getItem("surname")
-      : false;
-  const email =
-    typeof window !== "undefined"
-      ? window.localStorage.getItem("email")
-      : false;
-  const userID =
-    typeof window !== "undefined"
-      ? window.localStorage.getItem("userID")
-      : false;
-  const powerBIUrl =
-    typeof window !== "undefined"
-      ? window.localStorage.getItem("BIurl")
-      : false;
-
   const router = useRouter();
   const dispatch = useDispatch();
   const paginationIndex = useSelector(
@@ -97,7 +78,7 @@ const Navbar = ({ logoProp, roleProp }: any) => {
             />
           </div>
           <Popover
-            placement="bottomLeft"
+            placement="bottom"
             content={<Filters open={isFilterOpen} setOpen={setIsFilterOpen} />}
             arrow={false}
             trigger="click"
@@ -128,7 +109,7 @@ const Navbar = ({ logoProp, roleProp }: any) => {
                     // intrinsicsize="50 x 50"
                     />
                   </div>
-                  <div className={styles.profile_name}>
+                  {/* <div className={styles.profile_name}>
                     <Tooltip color="white" title={email}>
                       <div
                         className={
@@ -149,7 +130,7 @@ const Navbar = ({ logoProp, roleProp }: any) => {
                         {email}
                       </div>
                     </Tooltip>
-                  </div>
+                  </div> */}
                   <div className={styles.dropdown_icon}>
                     {profil_dropdown}
                   </div>
