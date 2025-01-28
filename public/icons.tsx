@@ -232,11 +232,9 @@ const tableNextArrow = (
     </svg>
 );
 
-const three_dots = (
-    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="13" viewBox="0 0 12 13" fill="none">
-        <path d="M6 7C6.27614 7 6.5 6.77614 6.5 6.5C6.5 6.22386 6.27614 6 6 6C5.72386 6 5.5 6.22386 5.5 6.5C5.5 6.77614 5.72386 7 6 7Z" stroke="#67778C" strokeOpacity="0.8" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M6 3.5C6.27614 3.5 6.5 3.27614 6.5 3C6.5 2.72386 6.27614 2.5 6 2.5C5.72386 2.5 5.5 2.72386 5.5 3C5.5 3.27614 5.72386 3.5 6 3.5Z" stroke="#67778C" strokeOpacity="0.8" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M6 10.5C6.27614 10.5 6.5 10.2761 6.5 10C6.5 9.72386 6.27614 9.5 6 9.5C5.72386 9.5 5.5 9.72386 5.5 10C5.5 10.2761 5.72386 10.5 6 10.5Z" stroke="#67778C" strokeOpacity="0.8" strokeLinecap="round" strokeLinejoin="round" />
+const note = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="none">
+    <path d="M7.104 1.63477V3.70004C7.104 3.98006 7.104 4.12007 7.1585 4.22703C7.20644 4.32111 7.28293 4.3976 7.37701 4.44554C7.48396 4.50004 7.62398 4.50004 7.904 4.50004H9.96927M7.104 9H4.104M8.104 7H4.104M10.104 5.49411V9.1C10.104 9.94008 10.104 10.3601 9.94051 10.681C9.7967 10.9632 9.56723 11.1927 9.28499 11.3365C8.96412 11.5 8.54408 11.5 7.704 11.5H4.504C3.66393 11.5 3.24389 11.5 2.92302 11.3365C2.64078 11.1927 2.4113 10.9632 2.26749 10.681C2.104 10.3601 2.104 9.94008 2.104 9.1V3.9C2.104 3.05992 2.104 2.63988 2.26749 2.31901C2.4113 2.03677 2.64078 1.8073 2.92302 1.66349C3.24389 1.5 3.66393 1.5 4.504 1.5H6.10989C6.47678 1.5 6.66022 1.5 6.83285 1.54145C6.98591 1.57819 7.13222 1.6388 7.26643 1.72104C7.41781 1.8138 7.54752 1.94352 7.80695 2.20294L9.40106 3.79706C9.66049 4.05648 9.7902 4.1862 9.88296 4.33757C9.96521 4.47178 10.0258 4.6181 10.0626 4.77115C10.104 4.94378 10.104 5.12723 10.104 5.49411Z" stroke="#67778C" stroke-opacity="0.8" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
 );
 
@@ -352,6 +350,18 @@ const warningIcon = (
     </svg>
 );
 
+const editNote = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M7.99998 13.3341H14M2 13.3341H3.11636C3.44248 13.3341 3.60554 13.3341 3.75899 13.2973C3.89504 13.2646 4.0251 13.2108 4.1444 13.1377C4.27895 13.0552 4.39425 12.9399 4.62486 12.7093L13 4.33414C13.5523 3.78185 13.5523 2.88642 13 2.33413C12.4477 1.78185 11.5523 1.78185 11 2.33414L2.62484 10.7093C2.39424 10.9399 2.27894 11.0552 2.19648 11.1898C2.12338 11.3091 2.0695 11.4391 2.03684 11.5752C2 11.7286 2 11.8917 2 12.2178V13.3341Z" stroke="#D2D5DA" stroke-width="1.3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+);
+
+const toggleStatusArrow = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="none">
+        <path d="M9 2.5V10.5M9 10.5L7 8.5M9 10.5L11 8.5M4 10.5V2.5M4 2.5L2 4.5M4 2.5L6 4.5" stroke="#F1C40F" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+);
+
 
 export {
     home_icon,
@@ -374,12 +384,14 @@ export {
     platform_icon,
     tableNextArrow,
     tablePrevArrow,
-    three_dots,
+    note,
     download,
     datepicker_calendar,
     whatsapp,
     filters_calendar,
     successIcon,
     errorIcon,
-    warningIcon
+    warningIcon,
+    editNote,
+    toggleStatusArrow
 };
