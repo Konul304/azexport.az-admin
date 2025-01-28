@@ -2,32 +2,24 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { FilterFields } from "../storeInterface";
 
 const initialState: FilterFields = {
-    fields: {
-        startDate: null,
-        endDate: null,
-        company: "",
-        product: "",
-        productType: "",
-        country: "",
-        status: "",
-        amount: ""
-    },
+    date: null,
+    product: "",
+    platform: "",
+    country: "",
+    status: "",
+    category: "",
 };
 
 const filterSlice = createSlice({
     name: "filterFields",
     initialState,
     reducers: {
-        setField: (
-            state,
-            action: PayloadAction<{ key: keyof FilterFields; value: any }>
-        ) => {
-            const { key, value } = action.payload;
-            state[key] = value;
+        setFilters: (state, action: PayloadAction<any>) => {
+            return action.payload;
         },
     },
 });
 
-export const { setField } = filterSlice.actions;
+export const { setFilters } = filterSlice.actions;
 
 export default filterSlice.reducer;
