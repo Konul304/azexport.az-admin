@@ -20,7 +20,7 @@ const LoginPage = () => {
                 Cookies.set("azexport_token", res?.data?.token, { expires: 0.5 });
                 router.push("/home")
             }
-
+            setIsLoading(false);
         } catch (error: any) {
             setIsLoading(false);
             console.log(error);
