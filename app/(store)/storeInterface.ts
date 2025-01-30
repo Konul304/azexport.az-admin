@@ -18,7 +18,7 @@ export interface Pagination {
 }
 
 export interface FilterFields {
-    date: null,
+    date: "",
     product: "" | null,
     country: "",
     status: "",

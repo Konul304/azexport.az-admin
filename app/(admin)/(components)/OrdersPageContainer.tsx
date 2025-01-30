@@ -1,8 +1,9 @@
 "use client";
+import * as XLSX from "xlsx";
 import React, { useEffect, useMemo, useState } from 'react';
 import styles from "@/styles/componentStyles/OrdersPageContainer.module.scss";
 import Table from './Table/Table';
-import { delete_icon, download, edit, infoArrow, note, tableNextArrow, tablePrevArrow, toggleStatusArrow } from '@/public/icons';
+import { delete_icon, download, edit, infoArrow, note, search, tableNextArrow, tablePrevArrow, toggleStatusArrow } from '@/public/icons';
 import PlatformInfoModal from './PlatformInfoModal';
 import DeleteModal from './Common/DeleteModal';
 import AddNoteModal from './Common/AddNoteModal';
@@ -11,11 +12,13 @@ import { useSelector } from 'react-redux';
 import { FilterFields, Pagination, SearchState } from '../../(store)/storeInterface';
 import ReactPaginate from 'react-paginate';
 import CreateNewOrderModal from './CreateNewOrderModal';
-import { getFilteredOrders, getOrders, putOrder } from '../../(api)/api';
+import { getFilteredOrders, putOrder } from '../../(api)/api';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import store from '@/app/(store)/store';
 import { setOrders } from '@/app/(store)/(slices)/ordersSlice';
+import { TreeSelect } from 'antd';
+import SendToManufacturerModal from './SendToManufacturerModal';
 
 
 const OrdersPageContainer = () => {
@@ -26,6 +29,7 @@ const OrdersPageContainer = () => {
     const [selectedRow, setSelectedRow] = useState<any | null>(null);
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [openAddNoteModal, setOpenAddNoteModal] = useState(false);
+    const [openSendModal, setOpenSendModal] = useState(false);
     const [openCreateNewOrderModal, setOpenCreateNewOrderModal] = useState(false);
     const [modalAction, setModalAction] = useState<string>('');
     const [modalPosition, setModalPosition] = useState<any>();
@@ -64,26 +68,10 @@ const OrdersPageContainer = () => {
         (store: { search: SearchState }) => store.search.searchValue
     );
 
-    const { data } = useQuery(
-        ["ordersData"],
-        async () => await getOrders(),
-        {
-            refetchOnWindowFocus: false,
-            notifyOnChangeProps: 'all',
-        },
-    );
-
-    const isFiltersChanged = (filters: any) => {
-        const defaultFilters: any = { category: "", country: "", platform: "", date: null, product: "", status: "" };
-        const defaultFilters2: any = { category: [], country: [], platform: [], date: "", product: [], status: "" };
-        return Object.keys(filters).some(key => filters[key] !== (defaultFilters[key] && defaultFilters2[key]));
-    };
-
-    const { data: filteredData, refetch } = useQuery(
+    const { data, refetch } = useQuery(
         ["filtered-orders", filters],
         async () => await getFilteredOrders(filters),
         {
-            enabled: isFiltersChanged(filters), // Only fetch if filters have changed from default
             refetchOnMount: false,
             refetchOnWindowFocus: false,
             notifyOnChangeProps: 'all',
@@ -92,7 +80,7 @@ const OrdersPageContainer = () => {
 
     const toggleSelectAll = (isChecked: boolean) => {
         if (isChecked) {
-            const allIds = data?.data?.map((row: any) => row.id) ?? [];
+            const allIds = data?.data?.data?.map((row: any) => row.id) ?? [];
             setSelectedIds(allIds);
         } else {
             setSelectedIds([]);
@@ -111,7 +99,7 @@ const OrdersPageContainer = () => {
         }
         try {
             const res = await putOrder(row?.id, data)
-            client.invalidateQueries(["ordersData"]);
+            client.invalidateQueries(["filtered-orders"]);
         } catch (error: any) {
             console.log(error)
         }
@@ -136,16 +124,10 @@ const OrdersPageContainer = () => {
     }, [searchValue, setPaginationState]);
 
     useEffect(() => {
-        if (data?.data && Array.isArray(data.data)) {
-            store.dispatch(setOrders(data.data));
+        if (data?.data?.data && Array.isArray(data?.data?.data)) {
+            store.dispatch(setOrders(data.data?.data));
         }
-    }, [data?.data]);
-
-    useEffect(() => {
-        if (filteredData?.response?.data?.errors?.filters?.includes('No orders found')) {
-            setNoMatchingData(true)
-        }
-    }, [filters])
+    }, [data]);
 
     const allTableColumns: ColumnDef<any>[] = useMemo(
         () => [
@@ -156,8 +138,8 @@ const OrdersPageContainer = () => {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                         <input type='checkbox'
                             checked={
-                                data?.data?.length > 0 &&
-                                selectedIds.length === data?.data?.length
+                                data?.data?.data?.length > 0 &&
+                                selectedIds.length === data?.data?.data?.length
                             }
                             onChange={(e) => toggleSelectAll(e.target.checked)} />
                         <div>Sifariş NO</div>
@@ -221,13 +203,6 @@ const OrdersPageContainer = () => {
                 cell: (info: any) => info.getValue(),
                 enableResizing: false,
             },
-            // {
-            //     accessorFn: (row: any) => row?.seller_company,
-            //     id: "entrepreneur",
-            //     header: "Sifarişin verildiyi sahibkar",
-            //     cell: (info: any) => info.getValue(),
-            //     enableResizing: false,
-            // },
             {
                 accessorFn: (row: any) => row?.status,
                 id: "status",
@@ -286,16 +261,21 @@ const OrdersPageContainer = () => {
         [openRowId, selectedRow, data, selectedIds]
     );
 
-    console.log(filteredData)
-    console.log(data?.data)
+    const exportToExcel = () => {
+        console.log('called')
+        const worksheet = XLSX.utils.json_to_sheet(data?.data?.data); // Convert data to worksheet
+        const workbook = XLSX.utils.book_new(); // Create a new workbook
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1"); // Append worksheet
+        XLSX.writeFile(workbook, "table_data.xlsx"); // Save the file
+    };
 
     return (
         <>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '42px' }}>
                 <div className={styles.table_title}>Sifarişlər</div>
                 <div className={styles.buttons_container}>
-                    <div className={styles.download_btn}>{download}İxrac et</div>
-                    <div className={styles.send_btn}>İstehsalçıya göndər</div>
+                    <div className={styles.download_btn} onClick={exportToExcel}>{download}İxrac et</div>
+                    <div className={styles.send_btn} onClick={() => setOpenSendModal(true)}>İstehsalçıya göndər</div>
                     <div className={styles.add_new_order_btn} onClick={() => { setOpenCreateNewOrderModal(true); setModalAction('create') }}>Yeni sifariş yarat</div>
                 </div>
             </div>
@@ -303,7 +283,7 @@ const OrdersPageContainer = () => {
                 <div className={styles.table_container}>
                     <Table
                         columns={allTableColumns}
-                        tableData={filteredData?.data?.data ?? data?.data ?? []}
+                        tableData={data?.data?.data ?? []}
                         paginationState={paginationState}
                         setPaginationState={setPaginationState}
                         setPaginationDetails={setPaginationDetails}
@@ -313,13 +293,13 @@ const OrdersPageContainer = () => {
                     />
                     <div className={styles.table_pagination}>
                         <div className={styles.pagination_details_txt}>
-                            Axtarış nəticəsi: {data?.data?.length} məlumatın{" "}
+                            Axtarış nəticəsi: {data?.data?.data?.length} məlumatın{" "}
                             {paginationRange.startOfRange} - {paginationRange.endOfRange}{" "}
                             aralığı
                         </div>
                         <div className={styles.pagination}>
                             <ReactPaginate
-                                pageCount={Math.ceil(data?.data?.length / 10)}
+                                pageCount={Math.ceil(data?.data?.data?.length / 10)}
                                 breakLabel={
                                     <div className={`${styles.pagination_page_number}`}>...</div>
                                 }
@@ -365,6 +345,10 @@ const OrdersPageContainer = () => {
                             ...selectedRow,
                             date: selectedRow?.date ? dayjs(selectedRow.date, "YYYY-MM-DD HH:mm:ss") : null,
                         } : ''} />
+                    <SendToManufacturerModal
+                        openSendModal={openSendModal}
+                        setOpenSendModal={setOpenSendModal}
+                        selectedIds={selectedIds} />
                 </div>}
 
         </>

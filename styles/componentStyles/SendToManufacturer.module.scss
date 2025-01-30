@@ -1,0 +1,60 @@
+.modal_container {
+    font-family: SF Pro Display;
+    padding: 70px;
+
+    .title {
+        color: #2400FF;
+        font-size: 28px;
+        font-weight: 500;
+        line-height: 20px;
+        margin-bottom: 14px;
+    }
+
+    .description {
+        color: rgba(103, 119, 140, 0.70);
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 20px;
+        margin-bottom: 42px;
+    }
+
+    .inputs_flex {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .input {
+            width: 378px;
+            height: 42px;
+            border-radius: 6px;
+            border: 1px solid #2400FF;
+            background: #FFF;
+        }
+
+        .label {
+            color: #2B3644;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+    }
+}
+
+.select_footer {
+    font-size: 14px;
+    font-weight: 400;
+    width: 318px;
+    display: flex;
+    justify-content: space-between;
+
+    .select_all {
+        color: #2400FF;
+        cursor: pointer;
+    }
+
+    .clear {
+        color: #67778C;
+        cursor: pointer;
+    }
+}
