@@ -74,6 +74,26 @@ export const getCategories = async () => {
     }
 };
 
+
+export const deleteCategory = async (id: any) => {
+    try {
+        const response = await axiosCrmClient.delete(`categories/${id}`);
+        return response;
+    } catch (err: any) {
+        console.log(err);
+        throw new Error(err);
+    }
+};
+
+export const addCategory = async (data: any) => {
+    try {
+        const response = await axiosCrmClient.post(`categories`, data);
+        return response?.data;
+    } catch (err: any) {
+        throw new Error(err);
+    }
+};
+
 export const getSubscribers = async () => {
     try {
         const response = await axiosCrmClient.get("subscribers");
@@ -110,7 +130,6 @@ export const patchNote = async (id: number, data: any) => {
     }
 };
 
-
 export const getFilteredOrders = async (data: any) => {
     try {
         const params = new URLSearchParams();
@@ -125,8 +144,7 @@ export const getFilteredOrders = async (data: any) => {
                 params.append(key, String(data[key]));
             }
         }
-
-        const response = await axiosCrmClient.get(`orders-filter?${params.toString()}`);
+        const response = await axiosCrmClient.get(`orders?${params.toString()}`);
         return response;
     } catch (err: any) {
         console.error(err);

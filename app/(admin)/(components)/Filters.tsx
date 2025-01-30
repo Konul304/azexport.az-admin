@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import styles from "@/styles/componentStyles/OrdersPageContainer.module.scss"
 import { cancel, datepicker_calendar } from '@/public/icons';
 import { DatePicker, Divider, Form, FormProps, Select, Space } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setFilters } from '@/app/(store)/(slices)/filterSlice';
 import { useQuery } from '@tanstack/react-query';
-import { getCategories } from '@/app/(api)/api';
+import { getCategories, getOrders } from '@/app/(api)/api';
 
 interface OptionType {
     label: string;
@@ -16,9 +16,17 @@ const Filters = ({ open, setOpen }: any) => {
     const modalRef = useRef<HTMLDivElement>(null);
     const dispatch = useDispatch();
     const [form] = Form.useForm();
-    const orders = useSelector(
-        (store: { orders: any }) => store.orders
+
+    const { data: allData } = useQuery(
+        ["ordersData"],
+        async () => await getOrders(),
+        {
+            refetchOnWindowFocus: false,
+            notifyOnChangeProps: 'all',
+        },
     );
+    console.log(allData?.data)
+    let orders = allData?.data
 
     const onFinish: FormProps<any>['onFinish'] = (values) => {
         const mapValuesToLabels = (valuesArray: number[], options: OptionType[]) => {
@@ -65,31 +73,6 @@ const Filters = ({ open, setOpen }: any) => {
         }))
         : [];
 
-    // useEffect(() => {
-    //     const handleClickOutside = (event: MouseEvent) => {
-    //         if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-    //             setOpen(false); // Close the modal
-    //         }
-    //     };
-
-    //     document.addEventListener('mousedown', handleClickOutside);
-    //     return () => {
-    //         document.removeEventListener('mousedown', handleClickOutside);
-    //     };
-    // }, [setOpen]);
-
-    // useEffect(() => {
-    //         form.setFieldsValue({
-    //             date: '',
-    //             platform: [],
-    //             product: [],
-    //             category: [],
-    //             country: [],
-    //             status: [],
-    //         })
-    //         dispatch(setFilters({ category: "", country: "", platform: "", date: null, product: "", status: "" }))
-    // }, [])
-
     return (
         <div ref={modalRef} className={styles.filters_container}>
             <div className={styles.header}>
@@ -112,6 +95,7 @@ const Filters = ({ open, setOpen }: any) => {
                                 <div className={styles.filter_name}>Tarix </div>
                                 <div className={styles.clear_filter} onClick={() => form.setFieldsValue({ date: '' })}>Ləğv et</div>
                             </div>
+
                             <Form.Item
                                 label=""
                                 name="date"
@@ -124,6 +108,7 @@ const Filters = ({ open, setOpen }: any) => {
                                 />
                             </Form.Item>
                         </div>
+
                         <div>
                             <div className={styles.filter_header}>
                                 <div className={styles.filter_name}>Sifarişin çeşidi </div>

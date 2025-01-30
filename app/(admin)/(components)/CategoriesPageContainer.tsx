@@ -9,8 +9,13 @@ import { Pagination } from '@/app/(store)/storeInterface';
 import Table from './Table/Table';
 import { useQuery } from '@tanstack/react-query';
 import { getCategories } from '@/app/(api)/api';
+import DeleteModal from './Common/DeleteModal';
+import AddNoteModal from './Common/AddNoteModal';
 
 const CategoriesPageContainer = () => {
+    const [selectedRow, setSelectedRow] = useState<any | null>(null);
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
+    const [openAddNoteModal, setOpenAddNoteModal] = useState(false);
     const [paginationDetails, setPaginationDetails] = useState<any>({});
     const [paginationState, setPaginationState] = useState({
         pageSize: 10,
@@ -50,10 +55,10 @@ const CategoriesPageContainer = () => {
                     <div className={styles.table_buttons}>
                         <div
                             className={styles.td_remove_button}
-                        // onClick={() => {
-                        //     setSelectedRow(info.row.original);
-                        //     setOpenDeleteModal(true);
-                        // }}
+                            onClick={() => {
+                                setSelectedRow(info.row.original);
+                                setOpenDeleteModal(true);
+                            }}
                         >
                             {delete_icon}
                         </div>
@@ -79,7 +84,7 @@ const CategoriesPageContainer = () => {
             <div className={styles.table_container}>
                 <div className={styles.categories_header}>
                     <div className={styles.title}>Kateqoriyalar</div>
-                    <div className={styles.add_category_btn}>Yeni kateqoriya yarat</div>
+                    <div className={styles.add_category_btn} onClick={() => setOpenAddNoteModal(true)}>Yeni kateqoriya yarat</div>
                 </div>
                 <Table
                     columns={allTableColumns}
@@ -129,11 +134,14 @@ const CategoriesPageContainer = () => {
                         />
                     </div>
                 </div>
-                {/* {openDeleteModal && <DeleteModal
-                    openDeleteModal={openDeleteModal}
-                    setOpenDeleteModal={setOpenDeleteModal}
-                    selectedRow={selectedRow} />} */}
             </div>
+            {openDeleteModal && <DeleteModal
+                openDeleteModal={openDeleteModal}
+                setOpenDeleteModal={setOpenDeleteModal}
+                selectedRow={selectedRow} />}
+            {openAddNoteModal && <AddNoteModal
+                openAddNoteModal={openAddNoteModal}
+                setOpenAddNoteModal={setOpenAddNoteModal} />}
         </>
     )
 }

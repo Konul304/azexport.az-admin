@@ -2,7 +2,7 @@ import { Modal } from 'antd'
 import React from 'react'
 import styles from "@/styles/componentStyles/DeleteModal.module.scss"
 import { cancel } from '@/public/icons';
-import { deleteOrder } from '@/app/(api)/api';
+import { deleteCategory, deleteOrder } from '@/app/(api)/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
@@ -14,23 +14,40 @@ export interface DeleteModalProps {
 
 const DeleteModal = ({ openDeleteModal, setOpenDeleteModal, selectedRow }: DeleteModalProps) => {
     const client = useQueryClient();
+    console.log(selectedRow?.name)
 
     const deleteSelected = async () => {
-        try {
-            await deleteOrder(selectedRow?.id);
-            toast('Sifariş uğurla silindi');
-            setOpenDeleteModal(false)
-        } catch (error: any) {
-            console.log(error);
-            toast('Xəta baş verdi');
-            setOpenDeleteModal(false)
+        if (selectedRow?.name) {
+            try {
+                await deleteCategory(selectedRow?.id);
+                toast('Kateqoriya uğurla silindi');
+                setOpenDeleteModal(false)
+            } catch (error: any) {
+                console.log(error);
+                toast('Xəta baş verdi');
+                setOpenDeleteModal(false)
+            }
+        } else {
+            try {
+                await deleteOrder(selectedRow?.id);
+                toast('Sifariş uğurla silindi');
+                setOpenDeleteModal(false)
+            } catch (error: any) {
+                console.log(error);
+                toast('Xəta baş verdi');
+                setOpenDeleteModal(false)
+            }
         }
     }
 
     const deleteMutation = useMutation({
         mutationFn: deleteSelected,
         onSuccess: () => {
-            client.invalidateQueries(["ordersData"]);
+            if (selectedRow?.name) {
+                client.invalidateQueries(["categoriesData"])
+            } else {
+                client.invalidateQueries(["filtered-orders"]);
+            }
         },
     });
 

@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { FilterFields } from "../storeInterface";
 
 const initialState: FilterFields = {
-    date: null,
+    date: "",
     product: "",
     platform: "",
     country: "",
